@@ -13,7 +13,12 @@ const navItems = [
   { href: "#offers", label: "Offers" },
 ];
 
-const partnerLogos = ["airbnb", "Booking.com", "trivago", "Expedia"];
+const reassuranceNotes = [
+  "Private planning support",
+  "Curated hotel options",
+  "Arrival coordination",
+  "Local guide matching",
+];
 
 const quickStats = [
   { value: "4.9", label: "traveller rating" },
@@ -212,9 +217,14 @@ export default function HomePage() {
                     </span>
                     <span>trusted by travellers who want a calmer Ipoh plan</span>
                   </div>
-                  <div className="flex flex-wrap items-center gap-6 text-sm font-medium text-[#9aa8b4]">
-                    {partnerLogos.map((logo) => (
-                      <span key={logo}>{logo}</span>
+                  <div className="flex flex-wrap items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#7e95aa]">
+                    {reassuranceNotes.map((note) => (
+                      <span
+                        key={note}
+                        className="rounded-full border border-[#dbe6ef] bg-white/82 px-3 py-1.5"
+                      >
+                        {note}
+                      </span>
                     ))}
                   </div>
                 </div>

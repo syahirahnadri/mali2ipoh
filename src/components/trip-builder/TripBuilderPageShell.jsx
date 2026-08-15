@@ -12,7 +12,7 @@ export default function TripBuilderPageShell({
     <div className="page-shell">
       <Header />
       <main className="pb-20">
-        <Container className="pt-8 md:pt-12">
+        <Container className="pt-5 md:pt-7">
           <section className="soft-card rounded-[2rem] p-6 md:p-8">
             <p className="eyebrow text-xs font-semibold text-brand-deep">{eyebrow}</p>
             <h1 className="mt-3 font-display text-4xl text-ink md:text-5xl">{title}</h1>
