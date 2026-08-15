@@ -79,7 +79,7 @@ export default function TripBuilderSidebar({ state }) {
             Preferred tier: {TIERS[state.preferredTierId]?.name || "Not specified"}
           </p>
           <p>Hotel: {hotel ? hotel.name : "Not selected yet"}</p>
-          <p>Sample total: MYR {pricing.total}</p>
+          <p>Estimated total: MYR {pricing.total}</p>
         </div>
       </section>
     </aside>

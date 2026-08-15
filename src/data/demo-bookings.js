@@ -1,4 +1,5 @@
 import { addLocalDays } from "@/lib/date";
+import { buildScheduledStops } from "@/lib/itinerary-engine";
 import {
   CHECK_IN_METHODS,
   addMinutesToClock,
@@ -23,6 +24,7 @@ function buildItinerary(arrivalDate, itineraryMatrix) {
     date: addLocalDays(arrivalDate, index),
     destinationIds,
     estimatedMinutes: destinationIds.length * 120,
+    scheduledStops: buildScheduledStops(destinationIds),
   }));
 }
 

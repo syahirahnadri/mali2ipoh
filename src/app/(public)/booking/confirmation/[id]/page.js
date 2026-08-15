@@ -2,6 +2,7 @@
 
 import { use, useEffect, useMemo, useState } from "react";
 import Button from "@/components/shared/Button";
+import ItineraryDayList from "@/components/shared/ItineraryDayList";
 import TripBuilderPageShell from "@/components/trip-builder/TripBuilderPageShell";
 import { destinationsById } from "@/data/destinations";
 import { hotelsById } from "@/data/hotels";
@@ -157,23 +158,10 @@ function ConfirmationContent({ id }) {
 
           <section className="soft-card rounded-[2rem] p-6 md:p-8">
             <h2 className="text-xl font-semibold text-ink">Recommended itinerary</h2>
-            <div className="mt-5 grid gap-3">
-              {booking.recommendedItinerary.map((day) => (
-                <div
-                  key={`${day.dayNumber}-${day.date}`}
-                  className="rounded-2xl border border-line bg-surface px-4 py-4"
-                >
-                  <p className="font-semibold text-ink">
-                    Day {day.dayNumber} • {formatTravellerDate(day.date)}
-                  </p>
-                  <p className="mt-2 text-sm text-muted">
-                    {day.destinationIds
-                      .map((destinationId) => destinationsById[destinationId]?.name)
-                      .join(" → ")}
-                  </p>
-                </div>
-              ))}
-            </div>
+            <ItineraryDayList
+              itineraryDays={booking.recommendedItinerary}
+              surfaceClassName="bg-surface"
+            />
           </section>
 
           <section className="soft-card rounded-[2rem] p-6 md:p-8">

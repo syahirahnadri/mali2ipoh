@@ -4,9 +4,16 @@ import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 import { useAdminBookings } from "@/components/admin/useAdminData";
 import { destinationsById } from "@/data/destinations";
+import { TIER_IDS, TIERS } from "@/data/tiers";
 import { getAdminSession } from "@/lib/admin-session";
 import { getActiveTierId } from "@/lib/admin-tier-ops";
 import { formatArrivalOption, formatBookingStatus, formatTierId } from "@/lib/formatters";
+import {
+  DEFAULT_PRICING_SETTINGS,
+  getStoredPricingSettings,
+  resetStoredPricingSettings,
+  saveStoredPricingSettings,
+} from "@/lib/pricing-settings";
 
 const TODAY = "2026-08-15";
 const DISPLAY_DATE = "Saturday, 15 August 2026";
@@ -147,6 +154,241 @@ function SummaryCard({ card }) {
         {card.link.label} →
       </Link>
     </article>
+  );
+}
+
+function PricingField({ label, value, onChange, suffix = "MYR", step = "1" }) {
+  return (
+    <label className="block">
+      <span className="text-sm font-medium text-[#202440]">{label}</span>
+      <div className="mt-2 flex items-center gap-3 rounded-[18px] border border-[#e5e9f5] bg-[#f8f9fd] px-4 py-3">
+        <input
+          type="number"
+          min="0"
+          step={step}
+          value={value}
+          onChange={onChange}
+          className="w-full bg-transparent text-sm text-[#202440] outline-none"
+        />
+        <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6f7591]">
+          {suffix}
+        </span>
+      </div>
+    </label>
+  );
+}
+
+function PricingSettingsEditor() {
+  const [settings, setSettings] = useState(() => getStoredPricingSettings());
+  const [message, setMessage] = useState("");
+
+  function updateTierValue(tierId, field, nextValue) {
+    setSettings((current) => ({
+      ...current,
+      tiers: {
+        ...current.tiers,
+        [tierId]: {
+          ...current.tiers[tierId],
+          [field]: Number(nextValue) || 0,
+        },
+      },
+    }));
+  }
+
+  function updateTransferValue(group, field, nextValue) {
+    setSettings((current) => ({
+      ...current,
+      transfers: {
+        ...current.transfers,
+        [group]: {
+          ...current.transfers[group],
+          [field]: Number(nextValue) || 0,
+        },
+      },
+    }));
+  }
+
+  function handleSave() {
+    const saved = saveStoredPricingSettings(settings);
+    setSettings(saved);
+    setMessage("Pricing settings saved locally for this browser.");
+  }
+
+  function handleReset() {
+    setSettings(resetStoredPricingSettings());
+    setMessage("Pricing settings reset to default POC values.");
+  }
+
+  return (
+    <section className="mt-6 rounded-[24px] border border-[#d7dff2] bg-white p-6 shadow-[0_8px_18px_rgba(15,23,42,0.04)]">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="max-w-3xl">
+          <p className="text-[15px] font-semibold text-[#202440]">Pricing settings</p>
+          <p className="mt-2 text-sm leading-7 text-[#6f7591]">
+            Adjust the draft estimate model without changing code. These settings are saved in
+            this browser&apos;s local storage and immediately affect new price calculations in the
+            trip builder and checkout flow.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <button
+            type="button"
+            onClick={handleSave}
+            className="rounded-full bg-brand px-5 py-3 text-sm font-semibold text-[#202440] shadow-[0_12px_24px_rgba(255,216,102,0.35)] transition hover:brightness-95"
+          >
+            Save pricing settings
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="rounded-full border border-[#d7dff2] bg-white px-5 py-3 text-sm font-semibold text-[#202440] transition hover:bg-[#f4f7fe]"
+          >
+            Reset defaults
+          </button>
+        </div>
+      </div>
+
+      {message ? <p className="mt-4 text-sm font-medium text-[#0d7867]">{message}</p> : null}
+
+      <div className="mt-6 grid gap-6 xl:grid-cols-3">
+        {[TIER_IDS.EXPLORE, TIER_IDS.SMART_COMFORT, TIER_IDS.SIGNATURE].map((tierId) => {
+          const tierSettings = settings.tiers[tierId];
+
+          return (
+            <article
+              key={tierId}
+              className="rounded-[20px] border border-[#e8ecf6] bg-[#f8f9fd] p-5"
+            >
+              <p className="text-lg font-semibold text-[#202440]">{TIERS[tierId].name}</p>
+              <div className="mt-4 grid gap-4">
+                <PricingField
+                  label="Guide day rate"
+                  value={tierSettings.guideDayRateMYR}
+                  onChange={(event) =>
+                    updateTierValue(tierId, "guideDayRateMYR", event.target.value)
+                  }
+                />
+                <PricingField
+                  label="Operations day rate"
+                  value={tierSettings.operationsDayRateMYR}
+                  onChange={(event) =>
+                    updateTierValue(tierId, "operationsDayRateMYR", event.target.value)
+                  }
+                />
+                <PricingField
+                  label="Multilingual support day rate"
+                  value={tierSettings.multilingualSupportDayRateMYR}
+                  onChange={(event) =>
+                    updateTierValue(
+                      tierId,
+                      "multilingualSupportDayRateMYR",
+                      event.target.value,
+                    )
+                  }
+                />
+                <PricingField
+                  label="Party-bus day rate"
+                  value={tierSettings.partyBusDayRateMYR}
+                  onChange={(event) =>
+                    updateTierValue(tierId, "partyBusDayRateMYR", event.target.value)
+                  }
+                />
+                <PricingField
+                  label="Small-group supplement per day"
+                  value={tierSettings.smallGroupSupplementDayRateMYR}
+                  onChange={(event) =>
+                    updateTierValue(
+                      tierId,
+                      "smallGroupSupplementDayRateMYR",
+                      event.target.value,
+                    )
+                  }
+                />
+              </div>
+            </article>
+          );
+        })}
+      </div>
+
+      <div className="mt-6 grid gap-6 xl:grid-cols-[1.1fr_0.9fr_0.9fr]">
+        <article className="rounded-[20px] border border-[#e8ecf6] bg-[#f8f9fd] p-5">
+          <p className="text-lg font-semibold text-[#202440]">Shared estimate rules</p>
+          <div className="mt-4 grid gap-4">
+            <PricingField
+              label="Tax and service rate"
+              value={settings.taxRatePercent}
+              suffix="%"
+              onChange={(event) =>
+                setSettings((current) => ({
+                  ...current,
+                  taxRatePercent: Number(event.target.value) || 0,
+                }))
+              }
+            />
+            <PricingField
+              label="Child entrance fee multiplier"
+              value={settings.entranceFeeChildMultiplier}
+              suffix="x"
+              step="0.1"
+              onChange={(event) =>
+                setSettings((current) => ({
+                  ...current,
+                  entranceFeeChildMultiplier: Number(event.target.value) || 0,
+                }))
+              }
+            />
+          </div>
+        </article>
+
+        <article className="rounded-[20px] border border-[#e8ecf6] bg-[#f8f9fd] p-5">
+          <p className="text-lg font-semibold text-[#202440]">KLIA transfer</p>
+          <div className="mt-4 grid gap-4">
+            <PricingField
+              label="Up to 4 travellers"
+              value={settings.transfers.KLIA.upTo4MYR}
+              onChange={(event) =>
+                updateTransferValue("KLIA", "upTo4MYR", event.target.value)
+              }
+            />
+            <PricingField
+              label="5 or more travellers"
+              value={settings.transfers.KLIA.from5MYR}
+              onChange={(event) =>
+                updateTransferValue("KLIA", "from5MYR", event.target.value)
+              }
+            />
+          </div>
+        </article>
+
+        <article className="rounded-[20px] border border-[#e8ecf6] bg-[#f8f9fd] p-5">
+          <p className="text-lg font-semibold text-[#202440]">ETS transfer</p>
+          <div className="mt-4 grid gap-4">
+            <PricingField
+              label="Up to 3 travellers"
+              value={settings.transfers.ETS.upTo3MYR}
+              onChange={(event) =>
+                updateTransferValue("ETS", "upTo3MYR", event.target.value)
+              }
+            />
+            <PricingField
+              label="4 to 5 travellers"
+              value={settings.transfers.ETS.from4To5MYR}
+              onChange={(event) =>
+                updateTransferValue("ETS", "from4To5MYR", event.target.value)
+              }
+            />
+            <PricingField
+              label="6 or more travellers"
+              value={settings.transfers.ETS.from6MYR}
+              onChange={(event) =>
+                updateTransferValue("ETS", "from6MYR", event.target.value)
+              }
+            />
+          </div>
+        </article>
+      </div>
+    </section>
   );
 }
 
@@ -354,6 +596,8 @@ export default function AdminDashboardPage() {
               <SummaryCard key={card.title} card={card} />
             ))}
           </section>
+
+          <PricingSettingsEditor />
 
           <section className="mt-6 grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
             <SummaryCard card={summaryCards[3]} />
