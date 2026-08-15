@@ -24,3 +24,47 @@ export function formatArrivalOption(arrivalOption) {
 
   return "Not Set";
 }
+
+export function formatTierId(tierId) {
+  if (!tierId) {
+    return "Not selected";
+  }
+
+  return tierId
+    .split("_")
+    .map((word) => word.charAt(0) + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
+export function formatPunctualityStatus(status) {
+  if (!status) {
+    return "Not recorded";
+  }
+
+  return status
+    .split("_")
+    .map((word) => word.charAt(0) + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
+export function formatCheckpointType(type) {
+  if (!type) {
+    return "General meetup";
+  }
+
+  return type
+    .split("_")
+    .map((word) => word.charAt(0) + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
+export function formatCheckInMethod(method) {
+  if (!method) {
+    return "Not set";
+  }
+
+  return method
+    .split("_")
+    .map((word) => word.charAt(0) + word.slice(1).toLowerCase())
+    .join(" ");
+}

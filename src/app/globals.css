@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #eef4fb;
-  --foreground: #121212;
-  --surface: #fffdf7;
-  --surface-strong: #f5f0df;
+  --background: #edf5fb;
+  --foreground: #152a3b;
+  --surface: #fffdfa;
+  --surface-strong: #fff2e8;
   --card: #ffffff;
-  --line: #dce8f3;
-  --brand: #2f7df6;
-  --brand-deep: #171717;
-  --accent: #8dc8ff;
-  --muted: #6d7d8d;
-  --shadow: 0 24px 56px rgba(45, 87, 132, 0.12);
+  --line: #d5e4ef;
+  --brand: #156ea8;
+  --brand-deep: #0f4168;
+  --accent: #ff852f;
+  --muted: #668096;
+  --shadow: 0 24px 56px rgba(21, 83, 122, 0.12);
 }
 
 @theme inline {
@@ -36,12 +36,23 @@
 html {
   background: var(--background);
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: "Avenir Next", "Segoe UI", sans-serif;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas,
+iframe {
+  max-width: 100%;
+  height: auto;
 }
 
 a {
@@ -56,9 +67,10 @@ a {
 .page-shell {
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(140, 194, 255, 0.4), transparent 24%),
+    radial-gradient(circle at top left, rgba(21, 110, 168, 0.18), transparent 24%),
+    radial-gradient(circle at 78% 16%, rgba(255, 133, 47, 0.16), transparent 18%),
     radial-gradient(circle at 85% 18%, rgba(255, 255, 255, 0.85), transparent 18%),
-    linear-gradient(180deg, #f3f7fc 0%, #edf4fb 45%, #e7f1fa 100%);
+    linear-gradient(180deg, #f4f9fd 0%, #edf5fb 45%, #e8f1f8 100%);
 }
 
 .soft-card {
@@ -69,9 +81,9 @@ a {
 
 .sunset-panel {
   background:
-    radial-gradient(circle at 18% 18%, rgba(255, 235, 153, 0.22), transparent 24%),
+    radial-gradient(circle at 18% 18%, rgba(255, 133, 47, 0.2), transparent 24%),
     radial-gradient(circle at 82% 14%, rgba(255, 255, 255, 0.12), transparent 26%),
-    linear-gradient(145deg, #101010 0%, #1c1c1c 54%, #2d2d2d 100%);
+    linear-gradient(145deg, #113f63 0%, #145d91 54%, #1b78b7 100%);
 }
 
 .sky-hero {
@@ -79,8 +91,8 @@ a {
   background:
     radial-gradient(circle at 24% 18%, rgba(255, 255, 255, 0.95), transparent 20%),
     radial-gradient(circle at 76% 16%, rgba(255, 255, 255, 0.72), transparent 22%),
-    radial-gradient(circle at 52% 72%, rgba(255, 255, 255, 0.42), transparent 18%),
-    linear-gradient(180deg, #e7f4ff 0%, #cbe9fb 38%, #b9def4 100%);
+    radial-gradient(circle at 52% 72%, rgba(255, 133, 47, 0.18), transparent 18%),
+    linear-gradient(180deg, #e8f5fd 0%, #cce8f7 38%, #bddcef 100%);
 }
 
 .floating-plane {
@@ -104,13 +116,13 @@ a {
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #6384a5;
-  box-shadow: 0 16px 32px rgba(82, 124, 166, 0.08);
+  color: #4f6f8c;
+  box-shadow: 0 16px 32px rgba(43, 94, 135, 0.08);
 }
 
 .logo-cloud {
-  background: linear-gradient(180deg, rgba(248, 252, 255, 0.98), rgba(240, 248, 255, 0.98));
-  border: 1px solid rgba(220, 232, 243, 0.9);
+  background: linear-gradient(180deg, rgba(251, 253, 255, 0.98), rgba(243, 249, 253, 0.98));
+  border: 1px solid rgba(213, 228, 239, 0.9);
 }
 
 .destination-art {
@@ -147,9 +159,10 @@ a {
 .admin-shell {
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(140, 194, 255, 0.28), transparent 18%),
+    radial-gradient(circle at top left, rgba(21, 110, 168, 0.22), transparent 18%),
+    radial-gradient(circle at 76% 12%, rgba(255, 133, 47, 0.12), transparent 16%),
     radial-gradient(circle at 88% 14%, rgba(255, 255, 255, 0.72), transparent 16%),
-    linear-gradient(180deg, #f3f7fc 0%, #eaf3fb 52%, #e4eef8 100%);
+    linear-gradient(180deg, #f3f8fc 0%, #eaf2f8 52%, #e5edf5 100%);
 }
 
 .admin-panel {
@@ -173,10 +186,10 @@ a {
 .admin-highlight {
   background:
     radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.92), transparent 20%),
-    radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.72), transparent 24%),
-    linear-gradient(180deg, #edf7ff 0%, #dbeefe 46%, #cae4fb 100%);
+    radial-gradient(circle at 82% 18%, rgba(255, 133, 47, 0.18), transparent 24%),
+    linear-gradient(180deg, #eef8fd 0%, #dcebF6 46%, #cfe2f0 100%);
   border: 1px solid rgba(220, 232, 243, 0.98);
-  box-shadow: 0 24px 54px rgba(68, 110, 154, 0.12);
+  box-shadow: 0 24px 54px rgba(46, 95, 133, 0.12);
 }
 
 .admin-chip {
@@ -192,8 +205,8 @@ a {
 
 .admin-input:focus {
   outline: none;
-  border-color: rgba(47, 125, 246, 0.45);
-  box-shadow: 0 0 0 4px rgba(47, 125, 246, 0.1);
+  border-color: rgba(21, 110, 168, 0.45);
+  box-shadow: 0 0 0 4px rgba(21, 110, 168, 0.1);
 }
 
 .admin-nav-link {
@@ -202,9 +215,9 @@ a {
 }
 
 .admin-nav-link-active {
-  background: linear-gradient(180deg, #f2f9ff 0%, #d9edff 100%);
-  border: 1px solid rgba(149, 195, 243, 0.9);
-  box-shadow: 0 18px 36px rgba(67, 123, 182, 0.12);
+  background: linear-gradient(180deg, #f5fbff 0%, #d8edf8 100%);
+  border: 1px solid rgba(123, 182, 217, 0.9);
+  box-shadow: 0 18px 36px rgba(42, 104, 149, 0.12);
 }
 
 .admin-table {
@@ -216,14 +229,29 @@ a {
   background: linear-gradient(180deg, rgba(246, 250, 255, 0.98), rgba(237, 245, 252, 0.98));
 }
 
+.admin-density {
+  font-size: 0.95rem;
+}
+
+.admin-density h1,
+.admin-density h2,
+.admin-density h3,
+.admin-density h4 {
+  line-height: 1.05;
+}
+
+.admin-density p {
+  line-height: 1.55;
+}
+
 .dashboard-grid {
   display: grid;
   gap: 1rem;
 }
 
 .dashboard-stat {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 251, 242, 0.98));
-  border: 1px solid rgba(231, 223, 200, 0.9);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 246, 239, 0.98));
+  border: 1px solid rgba(239, 222, 208, 0.9);
   box-shadow: 0 18px 40px rgba(18, 18, 18, 0.06);
 }
 

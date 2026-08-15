@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { useAdminBookings } from "@/components/admin/useAdminData";
 import { destinationsById } from "@/data/destinations";
 import { getAdminSession } from "@/lib/admin-session";
-import { formatArrivalOption, formatBookingStatus } from "@/lib/formatters";
+import { getActiveTierId } from "@/lib/admin-tier-ops";
+import { formatArrivalOption, formatBookingStatus, formatTierId } from "@/lib/formatters";
 
 const TODAY = "2026-08-15";
 const DISPLAY_DATE = "Saturday, 15 August 2026";
@@ -43,6 +44,10 @@ function buildSummaryCards(bookings) {
   const totalRevenue = bookings.reduce((sum, booking) => sum + (booking.totalMYR || 0), 0);
   const kliaPickups = bookings.filter((booking) => booking.arrivalOption === "KLIA").length;
   const etsPickups = bookings.filter((booking) => booking.arrivalOption === "ETS").length;
+  const smartComfortRecommended = bookings.filter((booking) => booking.recommendedTierId === "SMART_COMFORT").length;
+  const smartComfortSelected = bookings.filter((booking) => getActiveTierId(booking) === "SMART_COMFORT").length;
+  const twoGuideBookings = bookings.filter((booking) => (booking.guidesRequired || 0) >= 2).length;
+  const partyBusBookings = bookings.filter((booking) => booking.partyBusRequired).length;
 
   return [
     {
@@ -57,34 +62,34 @@ function buildSummaryCards(bookings) {
       badgeClass: "border-[#ead48a] bg-[#fff4cc] text-[#9a7a10]",
     },
     {
-      title: "Confirmed trips",
-      value: confirmedTrips.toLocaleString("en"),
-      badge: "Operations",
-      highlight: `${bookings.filter((booking) => booking.arrivalDate >= TODAY).length} upcoming arrivals`,
+      title: "Smart Comfort focus",
+      value: smartComfortRecommended.toLocaleString("en"),
+      badge: "Recommendation",
+      highlight: `${smartComfortSelected} selected`,
       description:
-        "Trips already moving through hotel planning, guide matching, and pickup coordination.",
+        "Tracks how often the main product is recommended and how often travellers continue with it.",
       link: { href: "/admin/bookings", label: "View operations" },
       tone: "text-[#0d7867]",
       badgeClass: "border-[#c8e5df] bg-[#edf9f5] text-[#0d7867]",
     },
     {
-      title: "Revenue tracked",
-      value: formatCurrency(totalRevenue),
-      badge: "Payments",
-      highlight: `${formatCurrency(totalRevenue / Math.max(totalBookings, 1))} average booking value`,
+      title: "Operations coverage",
+      value: confirmedTrips.toLocaleString("en"),
+      badge: "Logistics",
+      highlight: `${twoGuideBookings} need two guides • ${partyBusBookings} need party bus`,
       description:
-        "Total booking value captured from the current browser-stored booking flow and itinerary pricing.",
+        "Shows how many trips are operationally active and how many need premium logistics support.",
       link: { href: "/admin/analytics", label: "View analytics" },
       tone: "text-[#232744]",
       badgeClass: "border-[#d7d3f7] bg-[#f6f3ff] text-[#5d54b9]",
     },
     {
       title: "Arrival support",
-      value: kliaPickups.toLocaleString("en"),
+      value: formatCurrency(totalRevenue),
       badge: "Airport",
-      highlight: `${etsPickups} ETS pickups`,
+      highlight: `${kliaPickups} KLIA pickups • ${etsPickups} ETS pickups`,
       description:
-        "Tracks how travellers enter the journey so arrival support can be prepared ahead of time.",
+        "Tracks booking value alongside arrival demand so admin can prepare transport and guide support.",
       link: { href: "/admin/bookings", label: "View arrivals" },
       tone: "text-[#5d54b9]",
       badgeClass: "border-[#d7d3f7] bg-[#f6f3ff] text-[#5d54b9]",
@@ -128,14 +133,14 @@ function buildRecentRows(bookings) {
 
 function SummaryCard({ card }) {
   return (
-    <article className="rounded-[24px] border border-[#e5e9f5] bg-white p-6 shadow-[0_8px_18px_rgba(15,23,42,0.04)]">
-      <div className="flex items-center justify-between gap-4">
+    <article className="rounded-[24px] border border-[#e5e9f5] bg-white p-5 shadow-[0_8px_18px_rgba(15,23,42,0.04)] sm:p-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-[15px] font-medium text-[#6f7591]">{card.title}</p>
         <span className={`rounded-full border px-3 py-1 text-sm font-medium ${card.badgeClass}`}>
           {card.badge}
         </span>
       </div>
-      <p className="mt-4 text-5xl font-semibold tracking-[-0.05em] text-[#202440]">{card.value}</p>
+      <p className="mt-4 break-words text-4xl font-semibold tracking-[-0.05em] text-[#202440] sm:text-5xl">{card.value}</p>
       <p className={`mt-6 text-sm font-medium ${card.tone}`}>{card.highlight}</p>
       <p className="mt-3 text-sm leading-8 text-[#6f7591]">{card.description}</p>
       <Link href={card.link.href} className="mt-4 inline-flex text-sm font-medium text-brand">
@@ -145,14 +150,95 @@ function SummaryCard({ card }) {
   );
 }
 
+function buildDemoDatasetCounts(bookings) {
+  const counts = {
+    total: bookings.length,
+    pending: 0,
+    confirmed: 0,
+    guideAssigned: 0,
+    ready: 0,
+    inProgress: 0,
+    completed: 0,
+    infoRequired: 0,
+    changeRequested: 0,
+    cancelled: 0,
+  };
+
+  bookings.forEach((booking) => {
+    switch (booking.status) {
+      case "PENDING_CONFIRMATION":
+        counts.pending += 1;
+        break;
+      case "CONFIRMED":
+        counts.confirmed += 1;
+        break;
+      case "GUIDE_ASSIGNED":
+        counts.guideAssigned += 1;
+        break;
+      case "READY":
+        counts.ready += 1;
+        break;
+      case "IN_PROGRESS":
+        counts.inProgress += 1;
+        break;
+      case "COMPLETED":
+        counts.completed += 1;
+        break;
+      case "INFORMATION_REQUIRED":
+        counts.infoRequired += 1;
+        break;
+      case "CHANGE_REQUESTED":
+        counts.changeRequested += 1;
+        break;
+      case "CANCELLED":
+        counts.cancelled += 1;
+        break;
+      default:
+        break;
+    }
+  });
+
+  return counts;
+}
+
 export default function AdminDashboardPage() {
-  const { bookings, isLoaded } = useAdminBookings();
+  const {
+    bookings,
+    isLoaded,
+    loadPresentationDemoBookings,
+    clearPresentationBookings,
+  } = useAdminBookings();
   const [adminName] = useState(getAdminName);
+  const [demoMessage, setDemoMessage] = useState("");
+  const [isPending, startTransition] = useTransition();
 
   const summaryCards = useMemo(() => buildSummaryCards(bookings), [bookings]);
   const actionRows = useMemo(() => buildActionRows(bookings), [bookings]);
   const topDestinations = useMemo(() => buildTopDestinations(bookings), [bookings]);
   const recentRows = useMemo(() => buildRecentRows(bookings), [bookings]);
+  const demoDatasetCounts = useMemo(() => buildDemoDatasetCounts(bookings), [bookings]);
+
+  function handleLoadDemoData() {
+    startTransition(() => {
+      const result = loadPresentationDemoBookings();
+      setDemoMessage(
+        result.addedCount
+          ? `Loaded ${result.addedCount} presentation bookings. Admin now shows ${result.totalCount} total bookings.`
+          : `Presentation bookings are already loaded. Admin still shows ${result.totalCount} total bookings.`,
+      );
+    });
+  }
+
+  function handleClearDemoData() {
+    startTransition(() => {
+      const result = clearPresentationBookings();
+      setDemoMessage(
+        result.removedCount
+          ? `Removed ${result.removedCount} presentation bookings. ${result.totalCount} real bookings remain in local storage.`
+          : `No presentation bookings were removed. ${result.totalCount} bookings remain in local storage.`,
+      );
+    });
+  }
 
   if (!isLoaded) {
     return (
@@ -164,29 +250,45 @@ export default function AdminDashboardPage() {
 
   if (!bookings.length) {
     return (
-      <section className="rounded-[24px] border border-[#e5e9f5] bg-white p-8 text-sm text-[#6f7591]">
-        No bookings yet. Create a booking from the public trip builder and it will appear here.
-      </section>
+      <div className="space-y-6">
+        <section className="rounded-[24px] border border-[#e5e9f5] bg-white p-8 text-sm text-[#6f7591]">
+          <p>No bookings yet. Create a booking from the public trip builder and it will appear here.</p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={handleLoadDemoData}
+              disabled={isPending}
+              className="rounded-full bg-brand px-5 py-3 text-sm font-semibold text-[#202440] shadow-[0_12px_24px_rgba(255,216,102,0.35)] transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isPending ? "Loading presentation data..." : "Load Presentation Demo Data"}
+            </button>
+          </div>
+          <p className="mt-4 text-sm text-[#6f7591]">
+            The demo set adds bookings across Explore, Smart Comfort, and Signature without overwriting existing localStorage records.
+          </p>
+          {demoMessage ? <p className="mt-3 text-sm font-medium text-[#0d7867]">{demoMessage}</p> : null}
+        </section>
+      </div>
     );
   }
 
   return (
     <div className="space-y-6">
       <section className="overflow-hidden rounded-[28px] border border-[#dfe4f2] bg-white shadow-[0_10px_20px_rgba(15,23,42,0.04)]">
-        <div className="flex items-center gap-5 border-b border-[#edf1f8] px-6 py-5">
+        <div className="flex items-center gap-4 border-b border-[#edf1f8] px-4 py-4 sm:gap-5 sm:px-6 sm:py-5">
           <span className="text-xl text-[#2e3156]">◫</span>
           <span className="h-8 w-px bg-[#e7ebf5]" />
-          <h1 className="text-2xl font-semibold tracking-[-0.03em] text-[#202440]">Dashboard</h1>
+          <h1 className="text-xl font-semibold tracking-[-0.03em] text-[#202440] sm:text-2xl">Dashboard</h1>
         </div>
 
-        <div className="bg-[#f8f8fc] p-6">
-          <div className="rounded-[28px] border border-[#e8ecf6] bg-white px-8 py-8 shadow-[0_8px_18px_rgba(15,23,42,0.04)]">
+        <div className="bg-[#f8f8fc] p-3 sm:p-4 lg:p-6">
+          <div className="rounded-[24px] border border-[#e8ecf6] bg-white px-5 py-6 shadow-[0_8px_18px_rgba(15,23,42,0.04)] sm:rounded-[28px] sm:px-8 sm:py-8">
             <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
               <div className="max-w-3xl">
                 <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[#6f7591]">
                   {DISPLAY_DATE}
                 </p>
-                <h2 className="mt-3 text-6xl font-semibold tracking-[-0.06em] text-[#1f2340]">
+                <h2 className="mt-3 text-4xl font-semibold tracking-[-0.06em] text-[#1f2340] sm:text-5xl lg:text-6xl">
                   Good afternoon
                 </h2>
                 <p className="mt-4 text-[15px] leading-8 text-[#6f7591]">
@@ -195,7 +297,7 @@ export default function AdminDashboardPage() {
                 </p>
               </div>
 
-              <div className="rounded-full border border-dashed border-[#e2cf82] bg-[#fff0b8] px-5 py-4 text-sm font-medium text-[#5f57a8]">
+              <div className="rounded-[24px] border border-dashed border-[#e2cf82] bg-[#fff0b8] px-4 py-3 text-sm font-medium text-[#5f57a8] sm:rounded-full sm:px-5 sm:py-4">
                 Tip: pending booking count updates when approvals change.
               </div>
             </div>
@@ -208,6 +310,45 @@ export default function AdminDashboardPage() {
             </p>
           </div>
 
+          <section className="mt-6 rounded-[24px] border border-[#d7dff2] bg-[#f7f9ff] p-5 shadow-[0_8px_18px_rgba(15,23,42,0.04)] sm:p-6">
+            <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
+              <div className="max-w-3xl">
+                <p className="text-[15px] font-semibold text-[#202440]">Presentation demo data</p>
+                <p className="mt-2 text-sm leading-7 text-[#6f7591]">
+                  Load a richer sample dataset for slides and walkthroughs. It includes every tier,
+                  mixed trip statuses, guide assignments, and premium logistics examples while keeping
+                  existing localStorage bookings intact.
+                </p>
+                <p className="mt-4 text-sm font-medium text-[#5d54b9]">
+                  Current admin totals: {demoDatasetCounts.total} bookings • {demoDatasetCounts.pending} pending • {demoDatasetCounts.confirmed} confirmed • {demoDatasetCounts.guideAssigned} guide assigned • {demoDatasetCounts.ready} ready • {demoDatasetCounts.inProgress} in progress • {demoDatasetCounts.completed} completed
+                </p>
+                <p className="mt-2 text-sm text-[#6f7591]">
+                  Extra statuses included: {demoDatasetCounts.infoRequired} information required • {demoDatasetCounts.changeRequested} change requested • {demoDatasetCounts.cancelled} cancelled
+                </p>
+                {demoMessage ? <p className="mt-4 text-sm font-medium text-[#0d7867]">{demoMessage}</p> : null}
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <button
+                  type="button"
+                  onClick={handleLoadDemoData}
+                  disabled={isPending}
+                  className="w-full rounded-full bg-brand px-5 py-3 text-sm font-semibold text-[#202440] shadow-[0_12px_24px_rgba(255,216,102,0.35)] transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                >
+                  {isPending ? "Updating demo data..." : "Load Presentation Demo Data"}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleClearDemoData}
+                  disabled={isPending}
+                  className="w-full rounded-full border border-[#d7dff2] bg-white px-5 py-3 text-sm font-semibold text-[#202440] transition hover:bg-[#f4f7fe] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                >
+                  Clear Presentation Demo Data
+                </button>
+              </div>
+            </div>
+          </section>
+
           <section className="mt-6 grid gap-6 xl:grid-cols-3">
             {summaryCards.slice(0, 3).map((card) => (
               <SummaryCard key={card.title} card={card} />
@@ -218,10 +359,10 @@ export default function AdminDashboardPage() {
             <SummaryCard card={summaryCards[3]} />
 
             <article className="rounded-[24px] border border-[#e5e9f5] bg-white p-6 shadow-[0_8px_18px_rgba(15,23,42,0.04)]">
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-[15px] font-medium text-[#6f7591]">Operational focus</p>
-                  <p className="mt-4 text-5xl font-semibold tracking-[-0.05em] text-[#202440]">
+                  <p className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-[#202440] sm:text-5xl">
                     {actionRows.length}
                   </p>
                 </div>
@@ -243,12 +384,12 @@ export default function AdminDashboardPage() {
                     <Link
                       key={booking.id}
                       href={`/admin/bookings/${booking.id}`}
-                      className="flex items-center justify-between gap-4 rounded-[18px] bg-[#f7f8fd] px-4 py-4 transition hover:bg-[#f1f4fb]"
+                      className="flex flex-col gap-3 rounded-[18px] bg-[#f7f8fd] px-4 py-4 transition hover:bg-[#f1f4fb] sm:flex-row sm:items-center sm:justify-between"
                     >
                       <div>
                         <p className="font-medium text-[#202440]">{booking.reference}</p>
                         <p className="mt-1 text-sm text-[#6f7591]">
-                          {booking.traveller.fullName} • {formatArrivalOption(booking.arrivalOption)}
+                          {booking.traveller.fullName} • {formatTierId(getActiveTierId(booking))}
                         </p>
                       </div>
                       <span className="rounded-full bg-[#fff0b8] px-3 py-1 text-xs font-semibold text-[#6a5e20]">
@@ -265,7 +406,7 @@ export default function AdminDashboardPage() {
 
           <section className="mt-6 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
             <article className="rounded-[24px] border border-[#e5e9f5] bg-white p-6 shadow-[0_8px_18px_rgba(15,23,42,0.04)]">
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-[15px] font-medium text-[#6f7591]">Recent bookings</p>
                   <p className="mt-1 text-sm text-[#6f7591]">
@@ -281,7 +422,7 @@ export default function AdminDashboardPage() {
                 <table className="min-w-full text-left text-sm">
                   <thead className="text-[#6f7591]">
                     <tr className="border-b border-[#eef2f8]">
-                      {["Reference", "Traveller", "Places", "Arrival", "Status", "Total"].map((label) => (
+                      {["Reference", "Traveller", "Tier", "Places", "Arrival", "Status", "Total"].map((label) => (
                         <th key={label} className="px-2 py-3 font-medium">
                           {label}
                         </th>
@@ -297,6 +438,7 @@ export default function AdminDashboardPage() {
                           </Link>
                         </td>
                         <td className="px-2 py-4 text-[#6f7591]">{booking.traveller.fullName}</td>
+                        <td className="px-2 py-4 text-[#6f7591]">{formatTierId(getActiveTierId(booking))}</td>
                         <td className="px-2 py-4 text-[#6f7591]">
                           {booking.selectedDestinationIds
                             .slice(0, 2)
@@ -321,7 +463,7 @@ export default function AdminDashboardPage() {
             </article>
 
             <article className="rounded-[24px] border border-[#e5e9f5] bg-white p-6 shadow-[0_8px_18px_rgba(15,23,42,0.04)]">
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-[15px] font-medium text-[#6f7591]">Popular selections</p>
                   <p className="mt-1 text-sm text-[#6f7591]">

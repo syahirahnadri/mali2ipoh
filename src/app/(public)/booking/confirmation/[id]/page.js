@@ -6,25 +6,12 @@ import TripBuilderPageShell from "@/components/trip-builder/TripBuilderPageShell
 import { destinationsById } from "@/data/destinations";
 import { hotelsById } from "@/data/hotels";
 import { formatTravellerDate } from "@/lib/date";
-import { formatBookingStatus } from "@/lib/formatters";
+import { formatBookingStatus, formatTierId } from "@/lib/formatters";
+import {
+  getArrivalOptionLabelForTier,
+  getActiveTierId,
+} from "@/lib/tier-booking";
 import { getBookingById } from "@/lib/storage";
-import { PICKUP_OPTIONS } from "@/types";
-
-function getArrivalLabel(arrivalOption) {
-  if (arrivalOption === PICKUP_OPTIONS.KLIA) {
-    return "KLIA pickup";
-  }
-
-  if (arrivalOption === PICKUP_OPTIONS.ETS) {
-    return "Ipoh ETS pickup";
-  }
-
-  if (arrivalOption === PICKUP_OPTIONS.SELF_ARRIVAL) {
-    return "No pickup required";
-  }
-
-  return "Not selected";
-}
 
 function ConfirmationContent({ id }) {
   const [booking, setBooking] = useState(null);
@@ -48,6 +35,16 @@ function ConfirmationContent({ id }) {
 
     return hotelsById[booking.hotelId];
   }, [booking]);
+  const tierId = booking ? getActiveTierId(booking) : null;
+  const selectedDestinations = useMemo(() => {
+    if (!booking) {
+      return [];
+    }
+
+    return booking.selectedDestinationIds
+      .map((destinationId) => destinationsById[destinationId])
+      .filter(Boolean);
+  }, [booking]);
 
   return (
     <TripBuilderPageShell
@@ -65,7 +62,7 @@ function ConfirmationContent({ id }) {
         <section className="soft-card rounded-[2rem] p-6 md:p-8">
           <h2 className="text-xl font-semibold text-ink">Booking not found</h2>
           <p className="mt-3 text-sm leading-7 text-muted">
-            We could not find this booking in local storage for the current browser.
+            We could not find a booking matching this reference.
           </p>
           <div className="mt-6">
             <Button href="/">Return to Homepage</Button>
@@ -104,7 +101,7 @@ function ConfirmationContent({ id }) {
                   Estimated total
                 </p>
                 <p className="mt-2 text-xl font-semibold text-ink">
-                  MYR {booking.totalMYR}
+                  MYR {booking.estimatedTotalMYR || booking.totalMYR}
                 </p>
               </div>
             </div>
@@ -114,6 +111,12 @@ function ConfirmationContent({ id }) {
             <h2 className="text-xl font-semibold text-ink">Booking summary</h2>
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               <p className="text-sm leading-7 text-muted">
+                Selected tier: {formatTierId(booking.selectedTierId || tierId)}
+              </p>
+              <p className="text-sm leading-7 text-muted">
+                Recommended tier: {formatTierId(booking.recommendedTierId)}
+              </p>
+              <p className="text-sm leading-7 text-muted">
                 Travel dates: {formatTravellerDate(booking.arrivalDate)} to {formatTravellerDate(booking.departureDate)}
               </p>
               <p className="text-sm leading-7 text-muted">
@@ -121,11 +124,34 @@ function ConfirmationContent({ id }) {
                 {booking.children ? ` and ${booking.children} children` : ""}
               </p>
               <p className="text-sm leading-7 text-muted">
-                Hotel: {hotel?.name || "TBD"}
+                Hotel: {hotel?.name || "Not included or not selected"}
               </p>
               <p className="text-sm leading-7 text-muted">
-                Arrival option: {getArrivalLabel(booking.arrivalOption)}
+                Arrival option: {getArrivalOptionLabelForTier(booking.arrivalOption, tierId)}
               </p>
+              <p className="text-sm leading-7 text-muted">
+                Guides required: {booking.guidesRequired || 0}
+              </p>
+              <p className="text-sm leading-7 text-muted">
+                Status: Pending Confirmation
+              </p>
+            </div>
+          </section>
+
+          <section className="soft-card rounded-[2rem] p-6 md:p-8">
+            <h2 className="text-xl font-semibold text-ink">Selected locations</h2>
+            <div className="mt-5 grid gap-3">
+              {selectedDestinations.map((destination) => (
+                <div
+                  key={destination.id}
+                  className="rounded-2xl border border-line bg-surface px-4 py-4"
+                >
+                  <p className="font-semibold text-ink">{destination.name}</p>
+                  <p className="mt-1 text-sm text-muted">
+                    {destination.zone} • {destination.estimatedMinutes} min
+                  </p>
+                </div>
+              ))}
             </div>
           </section>
 

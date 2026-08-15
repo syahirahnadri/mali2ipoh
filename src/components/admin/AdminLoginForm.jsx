@@ -48,7 +48,7 @@ export default function AdminLoginForm({ demoEmail, demoPassword }) {
   return (
     <form onSubmit={handleLogin} className="admin-card overflow-hidden rounded-[2rem] p-3 md:p-4">
       <div className="admin-highlight rounded-[26px] p-6 md:p-7">
-        <p className="eyebrow text-xs font-semibold text-[#5f7d98]">Mock POC authentication</p>
+        <p className="eyebrow text-xs font-semibold text-[#54738c]">Mock POC authentication</p>
         <h1 className="mt-3 font-display text-4xl text-ink">Admin Login</h1>
         <p className="mt-3 text-sm leading-7 text-muted">
           Use demo credentials from local environment to access the admin panel with the same calm, premium travel feel as the landing page.
@@ -56,7 +56,7 @@ export default function AdminLoginForm({ demoEmail, demoPassword }) {
       </div>
 
       <div className="mt-6 space-y-5 px-3 pb-3 md:px-4 md:pb-4">
-        <div className="rounded-[22px] border border-[#dfe8f3] bg-[#f7fbff] p-4 text-sm text-[#5d6d7f]">
+        <div className="rounded-[22px] border border-[#d9e5ee] bg-[#f8fbfd] p-4 text-sm text-[#5d6d7f]">
           <p className="font-semibold text-ink">Local demo credentials</p>
           <p className="mt-3 break-all">
             <span className="font-medium text-ink">Email:</span> {demoEmail}
@@ -67,7 +67,7 @@ export default function AdminLoginForm({ demoEmail, demoPassword }) {
           <button
             type="button"
             onClick={fillDemoCredentials}
-            className="mt-4 inline-flex rounded-full border border-[#cfe0f3] bg-white px-4 py-2 text-sm font-semibold text-brand-deep transition hover:bg-[#f3f8ff]"
+            className="mt-4 inline-flex rounded-full border border-[#cfe0ea] bg-white px-4 py-2 text-sm font-semibold text-brand-deep transition hover:bg-[#f6fbfe]"
           >
             Use Demo Credentials
           </button>

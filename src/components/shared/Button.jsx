@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const variantClasses = {
   primary:
-    "rounded-2xl bg-brand text-brand-deep shadow-[0_16px_32px_rgba(255,205,31,0.3)] hover:bg-[#f3bf00]",
+    "rounded-2xl bg-brand !text-white shadow-[0_16px_32px_rgba(21,110,168,0.24)] hover:bg-[#0f6294]",
   secondary:
     "rounded-2xl border border-line bg-white/90 text-ink hover:border-brand/50 hover:bg-surface",
 };
