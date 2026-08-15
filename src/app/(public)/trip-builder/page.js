@@ -1298,7 +1298,11 @@ function TripBuilderPageContent({ searchParams }) {
               </div>
 
               <div className="rounded-[1.5rem] border border-line bg-surface p-5">
-                <h2 className="text-xl font-semibold text-ink">Estimated price breakdown</h2>
+                <h2 className="text-xl font-semibold text-ink">Your trip estimate</h2>
+                <p className="mt-2 text-sm leading-7 text-muted">
+                  Your estimate combines the selected trip services, accommodation where included,
+                  attraction fees, arrival transfer, and applicable taxes.
+                </p>
                 <div className="mt-4 space-y-3">
                   {pricing.lineItems.map((item) => (
                     <div
@@ -1311,11 +1315,12 @@ function TripBuilderPageContent({ searchParams }) {
                   ))}
                 </div>
                 <div className="mt-4 flex items-center justify-between border-t border-line pt-4">
-                  <span className="text-sm font-semibold text-ink">Estimated Total</span>
+                  <span className="text-sm font-semibold text-ink">Estimated trip total</span>
                   <span className="text-2xl font-semibold text-ink">MYR {pricing.total}</span>
                 </div>
                 <p className="mt-3 text-sm leading-7 text-muted">
-                  This is a draft estimate for the POC based on the currently selected tier, hotel, attractions, and arrival option.
+                  Shared daily services are spread across your group. The final amount is confirmed
+                  after your booking details are reviewed.
                 </p>
               </div>
 

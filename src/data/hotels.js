@@ -18,7 +18,7 @@ export const hotels = [
     image: "/images/hotels/sekeping-kong-heng.jpg",
     zone: "Old Town",
     starRating: 3,
-    pricePerNightMYR: 420,
+    pricePerNightMYR: 280,
     roomCapacity: 2,
     facilities: ["Heritage setting", "Cafe access", "Courtyard", "Walkable area"],
     eligibleTierIds: ["SMART_COMFORT"],

@@ -23,7 +23,7 @@ export const DEFAULT_PRICING_SETTINGS = {
     [TIER_IDS.SIGNATURE]: {
       guideDayRateMYR: 380,
       operationsDayRateMYR: 260,
-      multilingualSupportDayRateMYR: 0,
+      multilingualSupportDayRateMYR: 120,
       partyBusDayRateMYR: 430,
       smallGroupSupplementDayRateMYR: 0,
     },
