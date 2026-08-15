@@ -35,9 +35,9 @@ const destinationCards = featuredCategories.slice(0, 3).map((category, index) =>
       .filter(Boolean)
       .join(" • "),
     tint: [
-      "from-[#2f7ec8] via-[#58a9df] to-[#d3efff]",
-      "from-[#f8b7ae] via-[#fdd9d2] to-[#c2edff]",
-      "from-[#36a7d6] via-[#7fd7e8] to-[#ecf8d6]",
+      "from-[#156ea8] via-[#64a9d2] to-[#e3f1f9]",
+      "from-[#ff9f5d] via-[#ffd3b4] to-[#d9edf8]",
+      "from-[#0f5f92] via-[#6eb3d8] to-[#fff1de]",
     ][index],
   };
 });
@@ -88,19 +88,19 @@ export default function HomePage() {
 
   return (
     <div className="page-shell">
-      <main className="pb-20 pt-6 md:pb-24 md:pt-8">
-        <Container>
-          <div className="mx-auto max-w-6xl rounded-[36px] bg-white/90 p-3 shadow-[0_28px_80px_rgba(31,72,119,0.12)] ring-1 ring-white/70 backdrop-blur md:rounded-[44px] md:p-5">
-            <section className="rounded-[30px] bg-white p-4 md:rounded-[38px] md:p-6">
-              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#edf2f7] pb-4">
+      <main className="pb-16 pt-4 md:pb-20 md:pt-6">
+        <Container className="max-w-[100rem] px-3 sm:px-4 lg:px-5">
+          <div className="mx-auto max-w-[96rem] rounded-[24px] bg-white/90 p-2 shadow-[0_28px_80px_rgba(21,83,122,0.12)] ring-1 ring-white/70 backdrop-blur sm:rounded-[32px] sm:p-3 md:rounded-[40px] md:p-4">
+            <section className="rounded-[22px] bg-white p-4 sm:rounded-[28px] md:rounded-[34px] md:p-5">
+              <div className="flex flex-col gap-4 border-b border-[#edf2f7] pb-3 md:grid md:grid-cols-[88px_1fr_auto] md:items-center md:gap-6 lg:grid-cols-[96px_1fr_auto]">
                 <BrandLogo
                   href="/"
                   className="block"
-                  imageClassName="max-w-[126px] md:max-w-[142px]"
+                  imageClassName="max-w-[66px] sm:max-w-[72px] md:max-w-[88px] lg:max-w-[96px]"
                   priority
                 />
 
-                <nav className="hidden items-center gap-8 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted md:flex">
+                <nav className="hidden items-center justify-center gap-5 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted md:flex lg:gap-7">
                   {navItems.map((item) => (
                     <a key={item.label} href={item.href} className="transition hover:text-ink">
                       {item.label}
@@ -110,34 +110,34 @@ export default function HomePage() {
 
                 <Button
                   href={getPreferredTierHref(TIER_IDS.SMART_COMFORT)}
-                  className="rounded-full px-5 py-2.5 text-xs uppercase tracking-[0.14em]"
+                  className="w-full justify-center rounded-full px-4 py-2 text-xs uppercase tracking-[0.14em] text-white sm:w-auto md:min-w-[148px]"
                 >
                   Book Trip
                 </Button>
               </div>
 
-              <div className="mt-4 grid gap-5 lg:grid-cols-[1.02fr_1.18fr]">
-                <div className="flex flex-col justify-between rounded-[30px] px-3 py-5 md:px-5 md:py-7">
-                  <div className="space-y-5">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#6f8aa3]">
-                      Mali2Ipoh travel design
+              <div className="mt-2 grid gap-4 xl:grid-cols-[0.98fr_1.02fr] xl:items-stretch">
+                <div className="flex flex-col justify-between rounded-[28px] px-1 py-4 md:px-3 md:py-5">
+                  <div className="space-y-4">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#567892]">
+                      Smart Comfort trips
                     </p>
-                    <div className="space-y-4">
-                      <h1 className="max-w-md font-display text-4xl font-semibold leading-[0.95] tracking-[-0.06em] text-ink md:text-6xl">
+                    <div className="space-y-3">
+                      <h1 className="max-w-[11ch] font-display text-4xl font-semibold leading-[0.92] tracking-[-0.065em] text-ink sm:text-5xl md:text-[4.55rem]">
                         Experience The Magic Of Flight!
                       </h1>
-                      <p className="max-w-md text-sm leading-7 text-muted md:text-base">
-                        A softer, more premium landing page for Smart Comfort trips,
-                        shaped like a modern travel brand instead of a booking form.
+                      <p className="max-w-xl text-sm leading-7 text-muted md:text-base">
+                        Plan a smoother Ipoh getaway with hotel options, guide support,
+                        and arrival help arranged in one guided booking flow.
                       </p>
                     </div>
                     <div className="flex flex-wrap items-center gap-3">
-                      <Button href={getPreferredTierHref(TIER_IDS.SMART_COMFORT)}>
+                      <Button href={getPreferredTierHref(TIER_IDS.SMART_COMFORT)} className="w-full justify-center text-white sm:w-auto">
                         Book A Trip Now
                       </Button>
                       <a
                         href="#discover"
-                        className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#d8e6f2] bg-white text-lg text-[#4f7bb0] transition hover:-translate-y-0.5"
+                        className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#d5e4ef] bg-white text-lg text-brand transition hover:-translate-y-0.5"
                         aria-label="Discover more"
                       >
                         →
@@ -145,11 +145,11 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                  <div className="mt-5 grid gap-3 sm:grid-cols-3">
                     {quickStats.map((item) => (
                       <div
                         key={item.label}
-                        className="rounded-[22px] border border-[#e9f0f5] bg-[#f8fbfe] px-4 py-4"
+                        className="rounded-[22px] border border-[#e2ebf1] bg-[#f8fbfd] px-4 py-3.5"
                       >
                         <p className="text-xl font-semibold tracking-[-0.04em] text-ink">
                           {item.value}
@@ -162,19 +162,19 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="sky-hero relative overflow-hidden rounded-[34px] p-5 md:p-7">
+                <div className="sky-hero relative overflow-hidden rounded-[30px] p-4 md:p-5 xl:min-h-[520px]">
                   <div className="floating-plane" aria-hidden="true">
                     ✈
                   </div>
 
                   <div className="flex h-full flex-col justify-between">
-                    <div className="flex items-start justify-between gap-4">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                       <div className="space-y-3">
                         <span className="cloud-pill">Overseas-friendly planning</span>
                         <span className="cloud-pill">Hotel + guide + pickup</span>
                       </div>
-                      <div className="rounded-[22px] bg-white/72 px-4 py-3 text-right shadow-[0_18px_40px_rgba(72,117,161,0.12)] backdrop-blur">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#6983a0]">
+                      <div className="max-w-full rounded-[22px] bg-white/72 px-4 py-3 text-left shadow-[0_18px_40px_rgba(42,100,143,0.12)] backdrop-blur sm:text-right">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#5a7891]">
                           Recommended tier
                         </p>
                         <p className="mt-1 text-sm font-semibold text-ink">
@@ -183,8 +183,8 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <div className="ml-auto max-w-[220px] rounded-[28px] bg-white/84 p-4 shadow-[0_20px_45px_rgba(80,122,166,0.16)] backdrop-blur md:p-5">
-                      <p className="text-sm font-semibold text-ink">Know More</p>
+                    <div className="mt-8 max-w-[220px] self-end rounded-[26px] bg-white/84 p-4 shadow-[0_20px_45px_rgba(42,100,143,0.16)] backdrop-blur md:mt-0 md:p-5">
+                      <p className="text-sm font-semibold text-ink">Trip snapshot</p>
                       <p className="mt-2 text-sm leading-6 text-muted">
                         {smartComfort.minPax}-{smartComfort.maxPax} travellers,
                         multilingual guide, and curated 3-4 star stays.
@@ -193,7 +193,7 @@ export default function HomePage() {
                         {["A", "M", "I"].map((avatar) => (
                           <span
                             key={avatar}
-                            className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-[linear-gradient(145deg,#55a6de,#a8def8)] text-xs font-semibold text-white"
+                            className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-[linear-gradient(145deg,#156ea8,#ff9a56)] text-xs font-semibold text-white"
                           >
                             {avatar}
                           </span>
@@ -204,10 +204,10 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="logo-cloud mt-5 rounded-[26px] px-4 py-4 md:px-6">
-                <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="logo-cloud mt-4 rounded-[24px] px-4 py-3 md:px-6">
+                <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
                   <div className="flex items-center gap-3 text-xs text-muted">
-                    <span className="rounded-full bg-white px-2.5 py-1 font-semibold text-[#5b87b7]">
+                    <span className="rounded-full bg-white px-2.5 py-1 font-semibold text-brand">
                       1600+
                     </span>
                     <span>trusted by travellers who want a calmer Ipoh plan</span>
@@ -221,11 +221,11 @@ export default function HomePage() {
               </div>
             </section>
 
-            <section id="discover" className="px-2 pb-2 pt-8 md:px-3 md:pt-10">
-              <div className="flex items-end justify-between gap-4">
+            <section id="discover" className="px-1 pb-2 pt-6 sm:px-2 md:px-2.5 md:pt-8">
+              <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <SectionTitle
                   title="Popular Destination"
-                  description="Start with the travel style that feels most like your trip."
+                  description="Choose the kind of Ipoh experience that fits your group best."
                 />
                 <div className="hidden h-10 w-10 items-center justify-center rounded-full bg-[#0f1720] text-white md:flex">
                   ›
@@ -239,7 +239,7 @@ export default function HomePage() {
                     className="overflow-hidden rounded-[24px] bg-white shadow-[0_18px_44px_rgba(65,94,130,0.08)] ring-1 ring-[#edf2f7]"
                   >
                     <div
-                      className={`destination-art h-44 bg-gradient-to-br ${card.tint}`}
+                      className={`destination-art h-40 sm:h-44 bg-gradient-to-br ${card.tint}`}
                     />
                     <div className="p-4">
                       <div className="flex items-start justify-between gap-3">
@@ -247,14 +247,14 @@ export default function HomePage() {
                           <h3 className="text-sm font-semibold text-ink">{card.title}</h3>
                           <p className="mt-1 text-xs text-muted">{card.meta}</p>
                         </div>
-                        <span className="rounded-full bg-[#2f7df6] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white">
+                        <span className="rounded-full bg-brand px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white">
                           4.9
                         </span>
                       </div>
                       <p className="mt-3 text-sm leading-6 text-muted">{card.label}</p>
                       <p className="mt-3 text-sm leading-6 text-muted">{card.description}</p>
-                      <p className="mt-4 text-xs font-medium uppercase tracking-[0.14em] text-[#5f7d98]">
-                        User can choose: {card.choiceLabel}
+                      <p className="mt-4 text-xs font-medium uppercase tracking-[0.14em] text-[#5a7891]">
+                        Featured stops: {card.choiceLabel}
                       </p>
                     </div>
                   </article>
@@ -262,17 +262,17 @@ export default function HomePage() {
               </div>
             </section>
 
-            <section id="journey" className="px-2 pb-2 pt-10 md:px-3 md:pt-14">
+            <section id="journey" className="px-1 pb-2 pt-8 sm:px-2 md:px-2.5 md:pt-10">
               <div className="text-center">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#7a96b2]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#5f7f99]">
                   Journey To The Skies Made Simple!
                 </p>
                 <h2 className="mt-3 font-display text-3xl font-semibold tracking-[-0.05em] text-ink md:text-4xl">
                   Booking that feels guided, not overwhelming.
                 </h2>
                 <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-muted md:text-base">
-                  The screenshot you shared has a strong travel-magazine rhythm, so this
-                  section mirrors that with three clean steps and a featured center card.
+                  Move from inspiration to confirmed plans with a simple flow built for
+                  overseas travellers and small private groups.
                 </p>
               </div>
 
@@ -280,15 +280,15 @@ export default function HomePage() {
                 {journeySteps.map((step) => (
                   <article
                     key={step.title}
-                    className={`rounded-[28px] p-6 ${
+                    className={`rounded-[28px] p-5 ${
                       step.featured
-                        ? "bg-[linear-gradient(180deg,#2482f7_0%,#1b6ce1_100%)] text-white shadow-[0_28px_60px_rgba(36,130,247,0.28)]"
+                        ? "bg-[linear-gradient(180deg,#156ea8_0%,#0f5f92_100%)] text-white shadow-[0_28px_60px_rgba(21,110,168,0.24)]"
                         : "bg-[#f7f9fc] text-ink ring-1 ring-[#eef2f7]"
                     }`}
                   >
                     <div
                       className={`flex h-11 w-11 items-center justify-center rounded-full ${
-                        step.featured ? "bg-white/18" : "bg-white text-[#2f7df6] shadow-sm"
+                        step.featured ? "bg-white/18" : "bg-white text-brand shadow-sm"
                       }`}
                     >
                       {step.featured ? "✈" : "•"}
@@ -306,7 +306,7 @@ export default function HomePage() {
                     <a
                       href={getPreferredTierHref(TIER_IDS.SMART_COMFORT)}
                       className={`mt-8 inline-flex text-xs font-semibold uppercase tracking-[0.18em] ${
-                        step.featured ? "text-white" : "text-[#2f7df6]"
+                        step.featured ? "text-white" : "text-brand"
                       }`}
                     >
                       Learn More
@@ -316,34 +316,33 @@ export default function HomePage() {
               </div>
             </section>
 
-            <section id="stays" className="grid gap-6 px-2 pb-2 pt-10 lg:grid-cols-[0.82fr_1.18fr] md:px-3 md:pt-14">
+            <section id="stays" className="grid gap-5 px-1 pb-2 pt-8 sm:px-2 md:px-2.5 md:pt-10 lg:grid-cols-[0.84fr_1.16fr]">
               <article className="overflow-hidden rounded-[30px] bg-white shadow-[0_22px_50px_rgba(65,94,130,0.08)] ring-1 ring-[#edf2f7]">
-                <div className="destination-art h-72 bg-[linear-gradient(180deg,#8ed3f9_0%,#bce7ff_48%,#f7d699_100%)]" />
+                <div className="destination-art h-56 sm:h-72 bg-[linear-gradient(180deg,#93c6e3_0%,#d9edf8_48%,#ffd8bc_100%)]" />
                 <div className="flex items-center justify-between gap-4 px-5 py-4">
                   <div>
-                    <p className="text-xl font-semibold tracking-[-0.04em] text-[#2f7df6]">
+                    <p className="text-xl font-semibold tracking-[-0.04em] text-brand">
                       20% OFF
                     </p>
                     <p className="mt-1 text-sm text-muted">for early comfort planners</p>
                   </div>
-                  <span className="rounded-full bg-[#eff6ff] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#2f7df6]">
+                  <span className="rounded-full bg-[#edf7fd] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-brand">
                     limited
                   </span>
                 </div>
               </article>
 
-              <article id="offers" className="flex flex-col justify-between rounded-[30px] bg-white p-6 shadow-[0_22px_50px_rgba(65,94,130,0.08)] ring-1 ring-[#edf2f7] md:p-8">
+              <article id="offers" className="flex flex-col justify-between rounded-[30px] bg-white p-5 shadow-[0_22px_50px_rgba(65,94,130,0.08)] ring-1 ring-[#edf2f7] sm:p-6 md:p-7">
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#7a96b2]">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#5f7f99]">
                     Smart Comfort offer
                   </p>
-                  <h2 className="mt-3 max-w-xl font-display text-4xl font-semibold leading-[0.95] tracking-[-0.05em] text-ink md:text-6xl">
+                  <h2 className="mt-3 max-w-xl font-display text-4xl font-semibold leading-[0.95] tracking-[-0.05em] text-ink sm:text-5xl md:text-6xl">
                     Unleash Wanderlust With Skywings
                   </h2>
                   <p className="mt-4 max-w-xl text-sm leading-7 text-muted md:text-base">
-                    This adapts the bold closing banner from your reference while keeping it
-                    grounded in the Mali2Ipoh product: guided planning, compact hotel choices,
-                    and better arrival handling for overseas travellers.
+                    Enjoy a more comfortable way to plan Ipoh, with curated stays,
+                    guided support, and arrival coordination designed around your trip.
                   </p>
                 </div>
 
@@ -351,7 +350,7 @@ export default function HomePage() {
                   {promoNotes.map((note) => (
                     <div
                       key={note}
-                      className="rounded-[22px] bg-[#f7fbff] px-4 py-4 text-sm leading-6 text-muted ring-1 ring-[#e7eef6]"
+                      className="rounded-[22px] bg-[#f8fbfd] px-4 py-4 text-sm leading-6 text-muted ring-1 ring-[#e1ebf1]"
                     >
                       {note}
                     </div>
@@ -364,9 +363,9 @@ export default function HomePage() {
                   </div>
                   <Button
                     href={getPreferredTierHref(TIER_IDS.SMART_COMFORT)}
-                    className="min-w-[220px] justify-center rounded-[18px] bg-[linear-gradient(180deg,#f3fbff_0%,#d8efff_100%)] shadow-none"
+                    className="w-full justify-center rounded-[18px] bg-[linear-gradient(180deg,#ff9a56_0%,#ff852f_100%)] shadow-[0_16px_32px_rgba(255,133,47,0.28)] sm:min-w-[220px] sm:w-auto"
                   >
-                    <span className="text-brand-deep">Book A Flight Now</span>
+                    <span className="text-white">Book A Flight Now</span>
                   </Button>
                 </div>
               </article>

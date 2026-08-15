@@ -3,16 +3,16 @@ import { TIER_IDS, TIERS } from "@/data/tiers";
 import { PICKUP_OPTIONS } from "@/types";
 
 export function getArrivalContext(state) {
-  if (state.arrivalOption) {
-    return state.arrivalOption;
-  }
-
   if (state.generalArrivalPoint === "KLIA") {
     return PICKUP_OPTIONS.KLIA;
   }
 
   if (state.generalArrivalPoint === "Ipoh ETS") {
     return PICKUP_OPTIONS.ETS;
+  }
+
+  if (state.arrivalOption) {
+    return state.arrivalOption;
   }
 
   return "";

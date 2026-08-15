@@ -355,8 +355,8 @@ function TierCard({
         ) : null}
       </div>
 
-      <p className="mt-2 text-sm leading-7 text-muted">{tier.positioning}</p>
-      <div className="mt-4 grid gap-2 text-sm text-muted">
+      <p className="mt-3 text-sm leading-7 text-muted">{tier.positioning}</p>
+      <div className="mt-5 grid gap-3 rounded-[1.25rem] border border-line/70 bg-white/65 p-4 text-sm text-muted sm:grid-cols-2">
         <p>Group size: {tier.minPax}-{tier.maxPax} travellers</p>
         <p>Trip duration: up to {tier.maxDays} days</p>
         <p>
@@ -375,12 +375,15 @@ function TierCard({
       {isEligible ? (
         <>
           {tierState?.reasons?.length ? (
-            <div className="mt-4 space-y-2">
+            <div className="mt-5 rounded-[1.25rem] border border-accent/20 bg-accent/5 p-4">
+              <p className="text-sm font-semibold text-ink">Why it fits</p>
+              <div className="mt-3 grid gap-2 sm:grid-cols-2">
               {tierState.reasons.map((reason) => (
                 <p key={reason} className="text-sm text-muted">
                   {reason}
                 </p>
               ))}
+              </div>
             </div>
           ) : null}
           <Button
@@ -392,9 +395,9 @@ function TierCard({
           </Button>
         </>
       ) : (
-        <div className="mt-4 rounded-2xl border border-brand/20 bg-brand/5 p-4">
+        <div className="mt-5 rounded-[1.25rem] border border-brand/20 bg-brand/5 p-4">
           <p className="text-sm font-semibold text-ink">Unavailable for this trip</p>
-          <div className="mt-2 space-y-2">
+          <div className="mt-3 space-y-2">
             {tierState?.reasons?.map((reason) => (
               <p key={reason} className="text-sm leading-7 text-muted">
                 {reason}
@@ -1030,7 +1033,7 @@ function TripBuilderPageContent({ searchParams }) {
                 ) : null}
               </div>
 
-              <div className="grid gap-4 lg:grid-cols-3">
+              <div className="grid gap-5">
                 {eligibleTierStates.map((tierState) => (
                   <TierCard
                     key={tierState.tierId}
@@ -1048,8 +1051,8 @@ function TripBuilderPageContent({ searchParams }) {
               <FieldError error={errors.recommendation} />
               <FieldError error={errors.selectedTierId} />
 
-              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
-                <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+                <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                   <Button href="/trip-builder?step=attractions" variant="secondary">
                     Change Locations
                   </Button>

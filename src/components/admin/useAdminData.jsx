@@ -4,8 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import { buildAdminAnalytics } from "@/lib/admin-analytics";
 import {
   appendBookingInternalNote,
+  clearPresentationDemoBookings,
   getBookingInternalNotes,
   getStoredBookings,
+  importPresentationDemoBookings,
   updateStoredBooking,
 } from "@/lib/storage";
 
@@ -40,6 +42,18 @@ export function useAdminBookings() {
     return notes;
   }
 
+  function loadPresentationDemoBookings() {
+    const result = importPresentationDemoBookings();
+    refreshBookings();
+    return result;
+  }
+
+  function clearPresentationBookings() {
+    const result = clearPresentationDemoBookings();
+    refreshBookings();
+    return result;
+  }
+
   function getNotes(bookingId) {
     return getBookingInternalNotes(bookingId);
   }
@@ -53,6 +67,8 @@ export function useAdminBookings() {
     updateBooking,
     addInternalNote,
     getNotes,
+    loadPresentationDemoBookings,
+    clearPresentationBookings,
     analytics,
   };
 }

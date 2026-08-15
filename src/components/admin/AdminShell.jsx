@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import BrandLogo from "@/components/shared/BrandLogo";
 import Button from "@/components/shared/Button";
 import { clearAdminSession, getAdminSession } from "@/lib/admin-session";
 
@@ -86,30 +87,32 @@ export default function AdminShell({ children }) {
 
   return (
     <div className="admin-shell">
-      <div className="mx-auto grid min-h-screen max-w-[1800px] lg:grid-cols-[410px_minmax(0,1fr)]">
-        <aside className="flex min-h-screen flex-col bg-[linear-gradient(180deg,#2a277c_0%,#25226f_100%)] px-8 py-6 text-white">
+      <div className="mx-auto grid min-h-screen max-w-[1680px] xl:grid-cols-[280px_minmax(0,1fr)]">
+        <aside className="flex flex-col bg-[linear-gradient(180deg,#0f456d_0%,#166aa2_58%,#0f5f92_100%)] px-4 py-4 text-white sm:px-5 sm:py-5 xl:min-h-screen xl:px-6 xl:py-6">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand text-brand-deep shadow-[0_10px_24px_rgba(255,205,31,0.25)]">
-                ✦
-              </div>
               <div>
-                <p className="text-[18px] font-semibold">Mali2Ipoh Admin Panel</p>
+                <BrandLogo
+                  href="/admin"
+                  className="block"
+                  imageClassName="max-w-[112px] brightness-[1.02] saturate-[1.02] sm:max-w-[124px]"
+                />
+                <p className="text-[15px] font-semibold sm:text-[17px]">Mali2Ipoh Admin Panel</p>
               </div>
             </div>
             <button
               type="button"
               onClick={() => setMenuOpen((current) => !current)}
-              className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white lg:hidden"
+              className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white xl:hidden"
             >
               Menu
             </button>
           </div>
 
-          <nav className={`${menuOpen ? "mt-8 grid" : "hidden"} gap-8 lg:mt-8 lg:grid`}>
+          <nav className={`${menuOpen ? "mt-5 grid" : "hidden"} gap-5 xl:mt-7 xl:grid xl:gap-7`}>
             {navGroups.map((group) => (
               <div key={group.label}>
-                <p className="text-[15px] font-medium text-white/55">{group.label}</p>
+                <p className="text-[13px] font-medium text-white/55">{group.label}</p>
                 <div className="mt-3 space-y-1.5">
                   {group.items.map((item) => {
                     const isActive = item.href === "/"
@@ -120,7 +123,7 @@ export default function AdminShell({ children }) {
                       <Link
                         key={item.href}
                         href={item.href}
-                        className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-[17px] transition ${
+                        className={`flex items-center gap-3 rounded-2xl px-3.5 py-2.5 text-sm transition sm:text-[15px] ${
                           isActive
                             ? "bg-white/12 font-semibold text-white"
                             : "text-white/82 hover:bg-white/8"
@@ -136,30 +139,30 @@ export default function AdminShell({ children }) {
             ))}
           </nav>
 
-          <div className="mt-auto rounded-[24px] bg-brand p-4 text-brand-deep shadow-[0_18px_30px_rgba(0,0,0,0.14)]">
+          <div className="mt-5 rounded-[22px] bg-[linear-gradient(180deg,#ff9b55_0%,#ff852f_100%)] p-3.5 text-white shadow-[0_18px_30px_rgba(0,0,0,0.14)] xl:mt-auto">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[linear-gradient(180deg,#2d2a82_0%,#23206a_100%)] text-base font-semibold text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[linear-gradient(180deg,#0f456d_0%,#145d91_100%)] text-sm font-semibold text-white">
                 {adminName.slice(0, 2).toUpperCase()}
               </div>
               <div className="min-w-0">
-                <p className="truncate text-[18px] font-semibold">{adminName}</p>
-                <p className="truncate text-sm opacity-80">{adminEmail}</p>
+                <p className="truncate text-base font-semibold">{adminName}</p>
+                <p className="truncate text-xs text-white/85 sm:text-sm">{adminEmail}</p>
               </div>
             </div>
 
             <Button
               onClick={handleLogout}
               variant="secondary"
-              className="mt-4 w-full rounded-2xl border-brand-deep/10 bg-white/85 text-brand-deep hover:bg-white"
+              className="mt-3 w-full rounded-2xl border-white/20 bg-white/92 px-4 py-2.5 text-sm text-brand-deep hover:bg-white"
             >
               Logout
             </Button>
           </div>
         </aside>
 
-        <main className="bg-[#f3f3fa] p-3 lg:p-2">
-          <div className="h-full rounded-[28px] border border-[#d9deef] bg-[#f7f7fc] shadow-[0_18px_40px_rgba(43,39,124,0.08)]">
-            <div className="px-4 py-4 lg:px-8 lg:py-6">
+        <main className="min-w-0 bg-[#edf4fa] p-2 sm:p-2.5 xl:p-2">
+          <div className="h-full rounded-[22px] border border-[#d3e1eb] bg-[#f8fbfd] shadow-[0_18px_40px_rgba(24,83,121,0.08)] sm:rounded-[24px]">
+            <div className="admin-density px-3 py-3 sm:px-4 sm:py-4 xl:px-6 xl:py-5">
               {children}
             </div>
           </div>

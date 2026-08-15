@@ -9,7 +9,7 @@ export default function BrandLogo({
 }) {
   const image = (
     <Image
-      src="/logo%20ipoh-01-01.png"
+      src="/mali2ipoh.png"
       alt="Mali2Ipoh logo"
       width={220}
       height={146}

@@ -6,13 +6,15 @@ import AdminPageFrame from "@/components/admin/AdminPageFrame";
 import { useAdminBookings } from "@/components/admin/useAdminData";
 import { guidesById } from "@/data/guides";
 import { hotelsById } from "@/data/hotels";
-import { formatBookingStatus, formatArrivalOption } from "@/lib/formatters";
+import { getActiveTierId, getAssignedGuideIds } from "@/lib/admin-tier-ops";
+import { formatBookingStatus, formatArrivalOption, formatTierId } from "@/lib/formatters";
 
 export default function AdminBookingsPage() {
   const { bookings, isLoaded } = useAdminBookings();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [arrivalFilter, setArrivalFilter] = useState("ALL");
+  const [tierFilter, setTierFilter] = useState("ALL");
   const [guideFilter, setGuideFilter] = useState("ALL");
   const [dateFilter, setDateFilter] = useState("");
 
@@ -24,15 +26,16 @@ export default function AdminBookingsPage() {
         booking.traveller.fullName.toLowerCase().includes(search.toLowerCase());
       const matchesStatus = statusFilter === "ALL" || booking.status === statusFilter;
       const matchesArrival = arrivalFilter === "ALL" || booking.arrivalOption === arrivalFilter;
+      const matchesTier = tierFilter === "ALL" || getActiveTierId(booking) === tierFilter;
       const matchesGuide =
         guideFilter === "ALL" ||
-        (guideFilter === "ASSIGNED" && !!booking.assignedGuideId) ||
-        (guideFilter === "UNASSIGNED" && !booking.assignedGuideId);
+        (guideFilter === "ASSIGNED" && getAssignedGuideIds(booking).length > 0) ||
+        (guideFilter === "UNASSIGNED" && getAssignedGuideIds(booking).length === 0);
       const matchesDate = !dateFilter || booking.arrivalDate === dateFilter;
 
-      return matchesSearch && matchesStatus && matchesArrival && matchesGuide && matchesDate;
+      return matchesSearch && matchesStatus && matchesArrival && matchesTier && matchesGuide && matchesDate;
     });
-  }, [arrivalFilter, bookings, dateFilter, guideFilter, search, statusFilter]);
+  }, [arrivalFilter, bookings, dateFilter, guideFilter, search, statusFilter, tierFilter]);
 
   return (
     <AdminPageFrame
@@ -72,6 +75,16 @@ export default function AdminBookingsPage() {
             <option value="SELF_ARRIVAL">Self Arrival</option>
           </select>
           <select
+            value={tierFilter}
+            onChange={(event) => setTierFilter(event.target.value)}
+            className="admin-input rounded-2xl px-4 py-3 text-sm text-ink"
+          >
+            <option value="ALL">All tiers</option>
+            <option value="EXPLORE">Explore</option>
+            <option value="SMART_COMFORT">Smart Comfort</option>
+            <option value="SIGNATURE">Signature</option>
+          </select>
+          <select
             value={guideFilter}
             onChange={(event) => setGuideFilter(event.target.value)}
             className="admin-input rounded-2xl px-4 py-3 text-sm text-ink"
@@ -105,7 +118,7 @@ export default function AdminBookingsPage() {
             <table className="min-w-full text-sm">
               <thead className="text-left text-muted">
                 <tr>
-                  {["Booking Reference", "Traveller", "Nationality", "Travel Dates", "Group Size", "Hotel", "Arrival", "Status", "Assigned Guide", "View"].map((label) => (
+                  {["Booking Reference", "Traveller", "Tier", "Travel Dates", "Group Size", "Hotel", "Arrival", "Guides", "Status", "View"].map((label) => (
                     <th key={label} className="px-4 py-3 font-semibold">{label}</th>
                   ))}
                 </tr>
@@ -115,13 +128,13 @@ export default function AdminBookingsPage() {
                   <tr key={booking.id} className="border-t border-line">
                     <td className="px-4 py-3 text-ink">{booking.reference}</td>
                     <td className="px-4 py-3 text-ink">{booking.traveller.fullName}</td>
-                    <td className="px-4 py-3 text-muted">{booking.traveller.nationality}</td>
+                    <td className="px-4 py-3 text-muted">{formatTierId(getActiveTierId(booking))}</td>
                     <td className="px-4 py-3 text-muted">{booking.arrivalDate} to {booking.departureDate}</td>
                     <td className="px-4 py-3 text-muted">{booking.adults + booking.children}</td>
-                    <td className="px-4 py-3 text-muted">{hotelsById[booking.hotelId]?.name || "TBD"}</td>
+                    <td className="px-4 py-3 text-muted">{hotelsById[booking.hotelId]?.name || "Not included"}</td>
                     <td className="px-4 py-3 text-muted">{formatArrivalOption(booking.arrivalOption)}</td>
+                    <td className="px-4 py-3 text-muted">{getAssignedGuideIds(booking).length}/{booking.guidesRequired || 0}</td>
                     <td className="px-4 py-3 text-muted">{formatBookingStatus(booking.status)}</td>
-                    <td className="px-4 py-3 text-muted">{guidesById[booking.assignedGuideId]?.name || "Unassigned"}</td>
                     <td className="px-4 py-3">
                       <Link href={`/admin/bookings/${booking.id}`} className="font-semibold text-brand-deep">View</Link>
                     </td>
@@ -135,11 +148,12 @@ export default function AdminBookingsPage() {
             {filteredBookings.map((booking) => (
               <article key={booking.id} className="admin-card rounded-[1.75rem] p-5">
                 <p className="font-semibold text-ink">{booking.reference}</p>
-                <p className="mt-2 text-sm text-muted">{booking.traveller.fullName} • {booking.traveller.nationality}</p>
+                <p className="mt-2 text-sm text-muted">{booking.traveller.fullName} • {formatTierId(getActiveTierId(booking))}</p>
                 <p className="mt-1 text-sm text-muted">{booking.arrivalDate} to {booking.departureDate}</p>
                 <p className="mt-1 text-sm text-muted">Arrival: {formatArrivalOption(booking.arrivalOption)}</p>
+                <p className="mt-1 text-sm text-muted">Hotel: {hotelsById[booking.hotelId]?.name || "Not included"}</p>
                 <p className="mt-1 text-sm text-muted">Status: {formatBookingStatus(booking.status)}</p>
-                <p className="mt-1 text-sm text-muted">Guide: {guidesById[booking.assignedGuideId]?.name || "Unassigned"}</p>
+                <p className="mt-1 text-sm text-muted">Guides: {getAssignedGuideIds(booking).length}/{booking.guidesRequired || 0}</p>
                 <Link href={`/admin/bookings/${booking.id}`} className="mt-4 inline-block text-sm font-semibold text-brand-deep">View Booking</Link>
               </article>
             ))}
