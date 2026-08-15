@@ -1,0 +1,40 @@
+export const hotels = [
+  {
+    id: "hotel-wei-lane",
+    name: "M Roof Hotel & Residences",
+    description: "A practical modern stay with larger rooms and family-friendly facilities.",
+    image: "/images/hotels/m-roof-hotel.jpg",
+    zone: "Jalan Dato Lau Pak Khuan",
+    starRating: 4,
+    pricePerNightMYR: 320,
+    roomCapacity: 4,
+    facilities: ["Pool", "Family rooms", "Breakfast", "Parking"],
+    eligibleTierIds: ["SMART_COMFORT"],
+  },
+  {
+    id: "hotel-old-town",
+    name: "Sekeping Kong Heng",
+    description: "A design-led heritage stay suited for couples and culture-focused travellers.",
+    image: "/images/hotels/sekeping-kong-heng.jpg",
+    zone: "Old Town",
+    starRating: 3,
+    pricePerNightMYR: 420,
+    roomCapacity: 2,
+    facilities: ["Heritage setting", "Cafe access", "Courtyard", "Walkable area"],
+    eligibleTierIds: ["SMART_COMFORT"],
+  },
+  {
+    id: "hotel-tambun",
+    name: "The Haven All Suite Resort",
+    description: "A premium suite option with strong appeal for longer stays and small groups.",
+    image: "/images/hotels/the-haven.jpg",
+    zone: "Tambun",
+    starRating: 5,
+    pricePerNightMYR: 560,
+    roomCapacity: 5,
+    facilities: ["Lake view", "Suites", "Resort pool", "Family amenities"],
+    eligibleTierIds: ["SIGNATURE"],
+  },
+];
+
+export const hotelsById = Object.fromEntries(hotels.map((hotel) => [hotel.id, hotel]));

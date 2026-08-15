@@ -1,0 +1,200 @@
+import { CATEGORY_IDS } from "@/types";
+
+export const DESTINATION_CATEGORIES = {
+  [CATEGORY_IDS.FAMOUS_LANDMARKS]: {
+    label: "Famous Landmarks",
+    description: "Iconic stops for first-time visitors who want signature Ipoh moments.",
+  },
+  [CATEGORY_IDS.LOCAL_FOOD]: {
+    label: "Local Food",
+    description: "Coffee, noodles, street snacks, and local flavours travellers ask about first.",
+  },
+  [CATEGORY_IDS.HERITAGE_CULTURE]: {
+    label: "Heritage & Culture",
+    description: "Stories, architecture, murals, and places that reveal old Ipoh.",
+  },
+  [CATEGORY_IDS.NATURE]: {
+    label: "Nature",
+    description: "Limestone scenery, gardens, and calm outdoor experiences around the city.",
+  },
+};
+
+export const destinations = [
+  {
+    id: "dest-kek-lok-tong",
+    name: "Kek Lok Tong Cave Temple",
+    slug: "kek-lok-tong-cave-temple",
+    category: CATEGORY_IDS.FAMOUS_LANDMARKS,
+    description: "A dramatic cave temple with peaceful gardens and easy visitor access.",
+    image: "/images/destinations/kek-lok-tong.jpg",
+    zone: "Gunung Rapat",
+    estimatedMinutes: 90,
+    openingTime: "08:00",
+    closingTime: "17:00",
+    availableDays: [0, 1, 2, 3, 4, 5, 6],
+    entranceFeeMYR: 0,
+    tags: ["cave", "photography", "first-time visitors"],
+    accessibilityTags: ["step-light", "family-friendly"],
+    popularityScore: 92,
+  },
+  {
+    id: "dest-concubine-lane",
+    name: "Concubine Lane",
+    slug: "concubine-lane",
+    category: CATEGORY_IDS.FAMOUS_LANDMARKS,
+    description: "A lively heritage lane with shops, snacks, and colourful facades.",
+    image: "/images/destinations/concubine-lane.jpg",
+    zone: "Old Town",
+    estimatedMinutes: 75,
+    openingTime: "10:00",
+    closingTime: "22:00",
+    availableDays: [0, 1, 2, 3, 4, 5, 6],
+    entranceFeeMYR: 0,
+    tags: ["shopping", "street life", "photo spots"],
+    accessibilityTags: ["walkable", "crowded-area"],
+    popularityScore: 95,
+  },
+  {
+    id: "dest-nam-heong",
+    name: "Nam Heong White Coffee",
+    slug: "nam-heong-white-coffee",
+    category: CATEGORY_IDS.LOCAL_FOOD,
+    description: "A classic white coffee stop that helps explain Ipoh’s food identity.",
+    image: "/images/destinations/nam-heong-white-coffee.jpg",
+    zone: "Old Town",
+    estimatedMinutes: 60,
+    openingTime: "07:30",
+    closingTime: "17:30",
+    availableDays: [0, 1, 2, 3, 4, 5, 6],
+    entranceFeeMYR: 20,
+    tags: ["white coffee", "breakfast", "iconic"],
+    accessibilityTags: ["seated", "family-friendly"],
+    popularityScore: 90,
+  },
+  {
+    id: "dest-taugeh-chicken",
+    name: "Ipoh Taugeh Chicken Lunch",
+    slug: "ipoh-taugeh-chicken-lunch",
+    category: CATEGORY_IDS.LOCAL_FOOD,
+    description: "A sample lunch stop built around one of Ipoh’s most requested dishes.",
+    image: "/images/destinations/taugeh-chicken.jpg",
+    zone: "Town Centre",
+    estimatedMinutes: 75,
+    openingTime: "11:00",
+    closingTime: "15:30",
+    availableDays: [1, 2, 3, 4, 5, 6],
+    entranceFeeMYR: 35,
+    tags: ["lunch", "signature dish", "shared meal"],
+    accessibilityTags: ["seated", "family-friendly"],
+    popularityScore: 88,
+  },
+  {
+    id: "dest-han-chin-pet-soo",
+    name: "Han Chin Pet Soo Museum",
+    slug: "han-chin-pet-soo-museum",
+    category: CATEGORY_IDS.HERITAGE_CULTURE,
+    description: "A strong heritage anchor for explaining Ipoh’s tin-mining past.",
+    image: "/images/destinations/han-chin-pet-soo.jpg",
+    zone: "Old Town",
+    estimatedMinutes: 90,
+    openingTime: "11:00",
+    closingTime: "15:30",
+    availableDays: [1, 2, 3, 4, 5, 6],
+    entranceFeeMYR: 10,
+    tags: ["museum", "history", "guided"],
+    accessibilityTags: ["stairs", "adults"],
+    popularityScore: 84,
+  },
+  {
+    id: "dest-mural-trail",
+    name: "Ipoh Heritage Mural Trail",
+    slug: "ipoh-heritage-mural-trail",
+    category: CATEGORY_IDS.HERITAGE_CULTURE,
+    description: "A relaxed walking trail connecting public art and old-town storytelling.",
+    image: "/images/destinations/ipoh-mural-trail.jpg",
+    zone: "Old Town",
+    estimatedMinutes: 80,
+    openingTime: "08:00",
+    closingTime: "19:00",
+    availableDays: [0, 1, 2, 3, 4, 5, 6],
+    entranceFeeMYR: 0,
+    tags: ["walking", "murals", "heritage streets"],
+    accessibilityTags: ["outdoor", "family-friendly"],
+    popularityScore: 86,
+  },
+  {
+    id: "dest-perak-cave",
+    name: "Perak Cave Temple",
+    slug: "perak-cave-temple",
+    category: CATEGORY_IDS.NATURE,
+    description: "A limestone-backed stop with cave atmosphere and scenic hill views.",
+    image: "/images/destinations/perak-cave.jpg",
+    zone: "Jelapang",
+    estimatedMinutes: 90,
+    openingTime: "08:00",
+    closingTime: "17:00",
+    availableDays: [0, 1, 2, 3, 4, 5, 6],
+    entranceFeeMYR: 0,
+    tags: ["limestone", "panorama", "light climb"],
+    accessibilityTags: ["steps", "outdoor"],
+    popularityScore: 81,
+  },
+  {
+    id: "dest-garden-east-west",
+    name: "The Banjaran Garden Walk",
+    slug: "the-banjaran-garden-walk",
+    category: CATEGORY_IDS.NATURE,
+    description: "A premium-feeling green stop for calm scenery and photo-friendly landscapes.",
+    image: "/images/destinations/banjaran-garden-walk.jpg",
+    zone: "Tambun",
+    estimatedMinutes: 60,
+    openingTime: "09:00",
+    closingTime: "18:00",
+    availableDays: [0, 1, 2, 3, 4, 5, 6],
+    entranceFeeMYR: 45,
+    tags: ["garden", "relaxed", "couples"],
+    accessibilityTags: ["step-light", "quiet"],
+    popularityScore: 78,
+  },
+];
+
+export const featuredCategories = [
+  {
+    id: CATEGORY_IDS.FAMOUS_LANDMARKS,
+    headline: "Postcard-ready landmarks with easy first-day appeal",
+    description:
+      "Best for travellers who want recognisable Ipoh moments before branching into food or culture.",
+    featuredDestinationIds: ["dest-kek-lok-tong", "dest-concubine-lane"],
+  },
+  {
+    id: CATEGORY_IDS.LOCAL_FOOD,
+    headline: "Food-first stops designed around Ipoh’s strongest flavours",
+    description:
+      "Shorter-duration visits that pair well with heritage zones and flexible touring buffers.",
+    featuredDestinationIds: ["dest-nam-heong", "dest-taugeh-chicken"],
+  },
+  {
+    id: CATEGORY_IDS.HERITAGE_CULTURE,
+    headline: "Stories and streets that explain why Ipoh feels distinct",
+    description:
+      "Useful for travellers who value context, architecture, and guided storytelling.",
+    featuredDestinationIds: ["dest-han-chin-pet-soo", "dest-mural-trail"],
+  },
+  {
+    id: CATEGORY_IDS.NATURE,
+    headline: "Limestone scenery and softer pacing around the city",
+    description:
+      "Adds visual variety and breathing room to itineraries built around town-centre attractions.",
+    featuredDestinationIds: ["dest-perak-cave", "dest-garden-east-west"],
+  },
+];
+
+export const destinationsById = Object.fromEntries(
+  destinations.map((destination) => [destination.id, destination]),
+);
+
+export const destinationsByCategory = destinations.reduce((groups, destination) => {
+  groups[destination.category] ||= [];
+  groups[destination.category].push(destination);
+  return groups;
+}, {});
