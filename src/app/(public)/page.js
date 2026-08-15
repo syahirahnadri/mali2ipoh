@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { destinationsById, featuredCategories } from "@/data/destinations";
 import { hotels } from "@/data/hotels";
 import { TIERS, TIER_IDS } from "@/data/tiers";
@@ -13,12 +14,17 @@ const navItems = [
   { href: "#offers", label: "Offers" },
 ];
 
-const partnerLogos = ["airbnb", "Booking.com", "trivago", "Expedia"];
+const reassuranceNotes = [
+  "Private planning support",
+  "Curated hotel options",
+  "Flexible local coordination",
+  "Local guide matching",
+];
 
 const quickStats = [
   { value: "4.9", label: "traveller rating" },
   { value: "2-8", label: "guests supported" },
-  { value: "KLIA + ETS", label: "smooth arrival options" },
+  { value: "3", label: "curated trip tiers" },
 ];
 
 const destinationCards = featuredCategories.slice(0, 3).map((category, index) => {
@@ -27,6 +33,7 @@ const destinationCards = featuredCategories.slice(0, 3).map((category, index) =>
   return {
     id: category.id,
     title: featuredDestination.name,
+    image: featuredDestination.image,
     label: category.headline,
     description: featuredDestination.description,
     meta: `${category.featuredDestinationIds.length} curated stops`,
@@ -48,18 +55,18 @@ const journeySteps = [
     description: "Browse the short list of Ipoh experiences built for first-timers.",
   },
   {
-    title: "Book A Ticket",
+    title: "Shape Your Trip",
     description: "Start with Smart Comfort and we shape the pace, stay, and route around you.",
     featured: true,
   },
   {
-    title: "Pay & Start Journey",
-    description: "Receive a practical itinerary with hotel and arrival support already aligned.",
+    title: "Confirm And Go",
+    description: "Receive a practical itinerary with hotel and guide support already aligned.",
   },
 ];
 
 const promoNotes = [
-  "Arrival pickup can be added from KLIA or Ipoh ETS.",
+  "Trip details stay easy to review before you confirm.",
   "Hotel choices stay focused so the booking flow feels easy.",
   "One guide supports the trip throughout the journey.",
 ];
@@ -124,11 +131,11 @@ export default function HomePage() {
                     </p>
                     <div className="space-y-3">
                       <h1 className="max-w-[11ch] font-display text-4xl font-semibold leading-[0.92] tracking-[-0.065em] text-ink sm:text-5xl md:text-[4.55rem]">
-                        Experience The Magic Of Flight!
+                        Experience Ipoh With A Smoother Plan
                       </h1>
                       <p className="max-w-xl text-sm leading-7 text-muted md:text-base">
                         Plan a smoother Ipoh getaway with hotel options, guide support,
-                        and arrival help arranged in one guided booking flow.
+                        and thoughtful trip coordination arranged in one guided booking flow.
                       </p>
                     </div>
                     <div className="flex flex-wrap items-center gap-3">
@@ -164,15 +171,15 @@ export default function HomePage() {
 
                 <div className="sky-hero relative overflow-hidden rounded-[30px] p-4 md:p-5 xl:min-h-[520px]">
                   <div className="floating-plane" aria-hidden="true">
-                    ✈
+                    ⌁
                   </div>
 
                   <div className="flex h-full flex-col justify-between">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                      <div className="space-y-3">
-                        <span className="cloud-pill">Overseas-friendly planning</span>
-                        <span className="cloud-pill">Hotel + guide + pickup</span>
-                      </div>
+                    <div className="space-y-3">
+                      <span className="cloud-pill">Overseas-friendly planning</span>
+                        <span className="cloud-pill">Hotel + guide + itinerary</span>
+                    </div>
                       <div className="max-w-full rounded-[22px] bg-white/72 px-4 py-3 text-left shadow-[0_18px_40px_rgba(42,100,143,0.12)] backdrop-blur sm:text-right">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#5a7891]">
                           Recommended tier
@@ -212,9 +219,14 @@ export default function HomePage() {
                     </span>
                     <span>trusted by travellers who want a calmer Ipoh plan</span>
                   </div>
-                  <div className="flex flex-wrap items-center gap-6 text-sm font-medium text-[#9aa8b4]">
-                    {partnerLogos.map((logo) => (
-                      <span key={logo}>{logo}</span>
+                  <div className="flex flex-wrap items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#7e95aa]">
+                    {reassuranceNotes.map((note) => (
+                      <span
+                        key={note}
+                        className="rounded-full border border-[#dbe6ef] bg-white/82 px-3 py-1.5"
+                      >
+                        {note}
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -227,9 +239,6 @@ export default function HomePage() {
                   title="Popular Destination"
                   description="Choose the kind of Ipoh experience that fits your group best."
                 />
-                <div className="hidden h-10 w-10 items-center justify-center rounded-full bg-[#0f1720] text-white md:flex">
-                  ›
-                </div>
               </div>
 
               <div className="mt-6 grid gap-4 md:grid-cols-3">
@@ -238,9 +247,16 @@ export default function HomePage() {
                     key={card.id}
                     className="overflow-hidden rounded-[24px] bg-white shadow-[0_18px_44px_rgba(65,94,130,0.08)] ring-1 ring-[#edf2f7]"
                   >
-                    <div
-                      className={`destination-art h-40 sm:h-44 bg-gradient-to-br ${card.tint}`}
-                    />
+                    <div className={`destination-art relative h-40 overflow-hidden sm:h-44 bg-gradient-to-br ${card.tint}`}>
+                      <Image
+                        src={card.image}
+                        alt={card.title}
+                        fill
+                        className="object-cover"
+                        sizes="(min-width: 768px) 33vw, 100vw"
+                      />
+                      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,29,42,0.08)_0%,rgba(12,29,42,0.2)_100%)]" />
+                    </div>
                     <div className="p-4">
                       <div className="flex items-start justify-between gap-3">
                         <div>
@@ -265,7 +281,7 @@ export default function HomePage() {
             <section id="journey" className="px-1 pb-2 pt-8 sm:px-2 md:px-2.5 md:pt-10">
               <div className="text-center">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#5f7f99]">
-                  Journey To The Skies Made Simple!
+                  Simple Trip Planning
                 </p>
                 <h2 className="mt-3 font-display text-3xl font-semibold tracking-[-0.05em] text-ink md:text-4xl">
                   Booking that feels guided, not overwhelming.
@@ -291,7 +307,7 @@ export default function HomePage() {
                         step.featured ? "bg-white/18" : "bg-white text-brand shadow-sm"
                       }`}
                     >
-                      {step.featured ? "✈" : "•"}
+                      {step.featured ? "◆" : "•"}
                     </div>
                     <h3 className="mt-12 max-w-[12rem] text-xl font-semibold tracking-[-0.03em]">
                       {step.title}
@@ -318,7 +334,16 @@ export default function HomePage() {
 
             <section id="stays" className="grid gap-5 px-1 pb-2 pt-8 sm:px-2 md:px-2.5 md:pt-10 lg:grid-cols-[0.84fr_1.16fr]">
               <article className="overflow-hidden rounded-[30px] bg-white shadow-[0_22px_50px_rgba(65,94,130,0.08)] ring-1 ring-[#edf2f7]">
-                <div className="destination-art h-56 sm:h-72 bg-[linear-gradient(180deg,#93c6e3_0%,#d9edf8_48%,#ffd8bc_100%)]" />
+                <div className="destination-art relative h-56 overflow-hidden sm:h-72">
+                  <Image
+                    src="/images/destinations/hotel.jpg"
+                    alt="Smart Comfort hotel stay"
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 40vw, 100vw"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,29,42,0.04)_0%,rgba(12,29,42,0.18)_100%)]" />
+                </div>
                 <div className="flex items-center justify-between gap-4 px-5 py-4">
                   <div>
                     <p className="text-xl font-semibold tracking-[-0.04em] text-brand">
@@ -338,7 +363,7 @@ export default function HomePage() {
                     Smart Comfort offer
                   </p>
                   <h2 className="mt-3 max-w-xl font-display text-4xl font-semibold leading-[0.95] tracking-[-0.05em] text-ink sm:text-5xl md:text-6xl">
-                    Unleash Wanderlust With Skywings
+                    Plan An Ipoh Stay That Feels Effortless
                   </h2>
                   <p className="mt-4 max-w-xl text-sm leading-7 text-muted md:text-base">
                     Enjoy a more comfortable way to plan Ipoh, with curated stays,
@@ -365,7 +390,7 @@ export default function HomePage() {
                     href={getPreferredTierHref(TIER_IDS.SMART_COMFORT)}
                     className="w-full justify-center rounded-[18px] bg-[linear-gradient(180deg,#ff9a56_0%,#ff852f_100%)] shadow-[0_16px_32px_rgba(255,133,47,0.28)] sm:min-w-[220px] sm:w-auto"
                   >
-                    <span className="text-white">Book A Flight Now</span>
+                    <span className="text-white">Start Planning Now</span>
                   </Button>
                 </div>
               </article>

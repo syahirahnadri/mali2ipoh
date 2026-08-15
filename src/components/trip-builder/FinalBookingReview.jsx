@@ -1,6 +1,7 @@
 import { destinationsById } from "@/data/destinations";
 import { TIERS } from "@/data/tiers";
 import { hotelsById } from "@/data/hotels";
+import ItineraryDayList from "@/components/shared/ItineraryDayList";
 import { formatTravellerDate } from "@/lib/date";
 import {
   getActiveTierId,
@@ -118,23 +119,7 @@ export default function FinalBookingReview({
 
       <div className="rounded-[1.5rem] border border-line bg-surface p-5">
         <h2 className="text-xl font-semibold text-ink">Recommended itinerary</h2>
-        <div className="mt-4 grid gap-3">
-          {itineraryDays.map((day) => (
-            <div
-              key={`${day.dayNumber}-${day.date}`}
-              className="rounded-2xl border border-line bg-white px-4 py-4"
-            >
-              <p className="font-semibold text-ink">
-                Day {day.dayNumber} • {formatTravellerDate(day.date)}
-              </p>
-              <p className="mt-2 text-sm text-muted">
-                {day.destinationIds
-                  .map((destinationId) => destinationsById[destinationId]?.name)
-                  .join(" → ")}
-              </p>
-            </div>
-          ))}
-        </div>
+        <ItineraryDayList itineraryDays={itineraryDays} />
       </div>
 
       <div className="rounded-[1.5rem] border border-line bg-surface p-5">

@@ -4,6 +4,7 @@ import { addLocalDays, diffLocalCalendarDays, parseLocalDate } from "@/lib/date"
 
 const MINUTES_PER_DAY = 420;
 const PER_STOP_BUFFER = 30;
+const DAY_START_MINUTES = 9 * 60;
 
 export function getTripNights(arrivalDate, departureDate) {
   return Math.max(0, diffLocalCalendarDays(arrivalDate, departureDate));
@@ -20,6 +21,43 @@ function getOpeningScore(destination) {
 
   const [hours, minutes] = destination.openingTime.split(":").map(Number);
   return hours * 60 + minutes;
+}
+
+function parseClockToMinutes(timeString) {
+  if (!timeString || !/^\d{2}:\d{2}$/.test(timeString)) {
+    return null;
+  }
+
+  const [hours, minutes] = timeString.split(":").map(Number);
+  return hours * 60 + minutes;
+}
+
+function formatMinutesAsClock(totalMinutes) {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+}
+
+export function buildScheduledStops(destinationIds) {
+  let currentMinutes = DAY_START_MINUTES;
+
+  return destinationIds
+    .map((destinationId) => destinationsById[destinationId])
+    .filter(Boolean)
+    .map((destination) => {
+      const openingMinutes = parseClockToMinutes(destination.openingTime);
+      const startMinutes = Math.max(currentMinutes, openingMinutes ?? DAY_START_MINUTES);
+      const endMinutes = startMinutes + destination.estimatedMinutes;
+
+      currentMinutes = endMinutes + PER_STOP_BUFFER;
+
+      return {
+        destinationId: destination.id,
+        startTime: formatMinutesAsClock(startMinutes),
+        endTime: formatMinutesAsClock(endMinutes),
+      };
+    });
 }
 
 function sortDestinationsForItinerary(selectedDestinations) {
@@ -115,7 +153,11 @@ export function buildItinerary(selectedDestinationIds, arrivalDate, departureDat
     overflowDestinationIds: overflow.map((destination) => destination.id),
     itineraryDays: days
       .filter((day) => day.destinationIds.length > 0)
-      .filter((day) => day.date >= arrivalDate && day.date < departureDate),
+      .filter((day) => day.date >= arrivalDate && day.date < departureDate)
+      .map((day) => ({
+        ...day,
+        scheduledStops: buildScheduledStops(day.destinationIds),
+      })),
     unassignedDestinations: overflow,
     selectedDestinations,
     tourDays,

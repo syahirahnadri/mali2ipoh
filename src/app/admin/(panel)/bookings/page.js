@@ -115,8 +115,9 @@ export default function AdminBookingsPage() {
       {filteredBookings.length ? (
         <>
           <section className="admin-table hidden overflow-hidden rounded-[2rem] xl:block">
+            <div className="max-h-[70vh] overflow-auto">
             <table className="min-w-full text-sm">
-              <thead className="text-left text-muted">
+              <thead className="sticky top-0 z-10 text-left text-muted">
                 <tr>
                   {["Booking Reference", "Traveller", "Tier", "Travel Dates", "Group Size", "Hotel", "Arrival", "Guides", "Status", "View"].map((label) => (
                     <th key={label} className="px-4 py-3 font-semibold">{label}</th>
@@ -142,9 +143,10 @@ export default function AdminBookingsPage() {
                 ))}
               </tbody>
             </table>
+            </div>
           </section>
 
-          <section className="grid gap-4 xl:hidden">
+          <section className="max-h-[70vh] space-y-4 overflow-y-auto pr-1 xl:hidden">
             {filteredBookings.map((booking) => (
               <article key={booking.id} className="admin-card rounded-[1.75rem] p-5">
                 <p className="font-semibold text-ink">{booking.reference}</p>

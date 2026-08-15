@@ -73,3 +73,17 @@ export function formatTravellerDate(dateString, locale = "en-MY") {
     year: "numeric",
   }).format(date);
 }
+
+export function formatTravellerTime(timeString, locale = "en-MY") {
+  if (!timeString || !/^\d{2}:\d{2}$/.test(timeString)) {
+    return timeString || "";
+  }
+
+  const [hours, minutes] = timeString.split(":").map(Number);
+  const date = new Date(2000, 0, 1, hours, minutes);
+
+  return new Intl.DateTimeFormat(locale, {
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
+}

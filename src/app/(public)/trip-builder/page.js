@@ -10,6 +10,7 @@ import {
 import { TIERS, TIER_IDS } from "@/data/tiers";
 import { hotelsById } from "@/data/hotels";
 import Button from "@/components/shared/Button";
+import ItineraryDayList from "@/components/shared/ItineraryDayList";
 import ProgressIndicator from "@/components/trip-builder/ProgressIndicator";
 import TripBuilderPageShell from "@/components/trip-builder/TripBuilderPageShell";
 import TripBuilderSidebar from "@/components/trip-builder/TripBuilderSidebar";
@@ -1268,23 +1269,7 @@ function TripBuilderPageContent({ searchParams }) {
 
               <div className="rounded-[1.5rem] border border-line bg-surface p-5">
                 <h2 className="text-xl font-semibold text-ink">Recommended itinerary</h2>
-                <div className="mt-4 grid gap-3">
-                  {itinerary.itineraryDays.map((day) => (
-                    <div
-                      key={day.dayNumber}
-                      className="rounded-2xl border border-line bg-white px-4 py-4"
-                    >
-                      <p className="font-semibold text-ink">
-                        Day {day.dayNumber} • {day.date}
-                      </p>
-                      <p className="mt-2 text-sm text-muted">
-                        {day.destinationIds
-                          .map((destinationId) => destinationsById[destinationId]?.name)
-                          .join(" → ")}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+                <ItineraryDayList itineraryDays={itinerary.itineraryDays} />
               </div>
 
               <div className="rounded-[1.5rem] border border-line bg-surface p-5">
@@ -1313,7 +1298,7 @@ function TripBuilderPageContent({ searchParams }) {
               </div>
 
               <div className="rounded-[1.5rem] border border-line bg-surface p-5">
-                <h2 className="text-xl font-semibold text-ink">Sample price breakdown</h2>
+                <h2 className="text-xl font-semibold text-ink">Estimated price breakdown</h2>
                 <div className="mt-4 space-y-3">
                   {pricing.lineItems.map((item) => (
                     <div
@@ -1330,7 +1315,7 @@ function TripBuilderPageContent({ searchParams }) {
                   <span className="text-2xl font-semibold text-ink">MYR {pricing.total}</span>
                 </div>
                 <p className="mt-3 text-sm leading-7 text-muted">
-                  All prices are sample values for the POC until production pricing rules are approved.
+                  This is a draft estimate for the POC based on the currently selected tier, hotel, attractions, and arrival option.
                 </p>
               </div>
 
