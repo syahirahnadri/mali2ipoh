@@ -231,18 +231,18 @@ function PricingSettingsEditor() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <button
             type="button"
             onClick={handleSave}
-            className="rounded-full bg-brand px-5 py-3 text-sm font-semibold text-[#202440] shadow-[0_12px_24px_rgba(255,216,102,0.35)] transition hover:brightness-95"
+            className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-full bg-brand px-6 py-3 text-center text-sm font-semibold whitespace-nowrap text-white shadow-[0_12px_24px_rgba(255,216,102,0.35)] transition hover:brightness-95"
           >
             Save pricing settings
           </button>
           <button
             type="button"
             onClick={handleReset}
-            className="rounded-full border border-[#d7dff2] bg-white px-5 py-3 text-sm font-semibold text-[#202440] transition hover:bg-[#f4f7fe]"
+            className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-full border border-[#d7dff2] bg-white px-6 py-3 text-center text-sm font-semibold whitespace-nowrap text-[#202440] transition hover:bg-[#f4f7fe]"
           >
             Reset defaults
           </button>
@@ -500,7 +500,7 @@ export default function AdminDashboardPage() {
               type="button"
               onClick={handleLoadDemoData}
               disabled={isPending}
-              className="rounded-full bg-brand px-5 py-3 text-sm font-semibold text-[#202440] shadow-[0_12px_24px_rgba(255,216,102,0.35)] transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
+              className="rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(255,216,102,0.35)] transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isPending ? "Loading presentation data..." : "Load Presentation Demo Data"}
             </button>
@@ -575,7 +575,7 @@ export default function AdminDashboardPage() {
                   type="button"
                   onClick={handleLoadDemoData}
                   disabled={isPending}
-                  className="w-full rounded-full bg-brand px-5 py-3 text-sm font-semibold text-[#202440] shadow-[0_12px_24px_rgba(255,216,102,0.35)] transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                  className="w-full rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(255,216,102,0.35)] transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                 >
                   {isPending ? "Updating demo data..." : "Load Presentation Demo Data"}
                 </button>
